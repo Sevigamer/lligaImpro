@@ -32,7 +32,8 @@
     </transition>
 
     <transition name="fade">
-      <div v-if="tarjeta" class="w-[650px] h-[480px] absolute top-[300px] left-[635px] Anton target" id="cuadro">
+      <div v-if="tarjeta" class="w-[650px] h-[480px] absolute top-[300px] left-[635px] Anton" :style="{ backgroundImage: 'url(' + imageUrl + ')' }">
+        <!-- <img src="../img/logo.gif" height="480" width="650" id="imagen"> -->
           <div class="h-4/5">
             <div class="p-2 h-fit text-3xl uppercase items-center">
               <p>{{impro.tipo}}</p>
@@ -65,7 +66,8 @@
     
     <div class="flex">
         <button @click="inOutMarcador" class="botones">Marcador IN/OUT</button>
-        <button @click="inOutTarjeta" class="botones">Tarjeta</button>
+        <button @click="inOutTarjeta(true)" class="botones">Tarjeta IN</button>
+        <button @click="inOutTarjeta(false)" class="botones">Tarjeta OUT</button>
     </div>
     <div class="flex mt-2">
       <button @click="sumarPuntos(true)" class="botones">Sumar Punto Izq</button>
@@ -109,7 +111,7 @@ import { ref } from 'vue';
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import {NSelect, NInput} from 'naive-ui';
 
-export default {
+export default{
   components:{
     VueCountdown,
     NSelect,
@@ -150,6 +152,7 @@ export default {
       {label: "4,5 minuto", value: 4.5},
     ])
     const impro = ref({id: 0})
+    const imageUrl = ref("../img/logo.gif");
     return{
       equipoIzq,
       equipoDer,
@@ -163,16 +166,26 @@ export default {
       titulo,
       jugadores,
       duracion, 
-      categoria
+      categoria,
+      imageUrl
     }
   },
   methods:{
-    inOutTarjeta(){
+    inOutTarjeta(paco){
       // console.log("sdfsd");
-      // setTimeout(function(){
-      //   document.getElementById("cuadro").style.backgroundImage = "url(../img/logo.gif)";
-      // }, 100)
-      this.tarjeta = !this.tarjeta;
+      if(paco){
+        console.log("gjosjdog")
+        this.tarjeta = true;
+        setTimeout(() => {
+          this.imageUrl = "../img/logo.gif"
+        }, 100);
+      }
+      else{
+        // document.getElementById("cuadro").style.backgroundImage = "";
+        this.tarjeta = false;
+        this.imageUrl = ""
+        // $img.hide();
+      }
     },
     inOutMarcador(){
       setTimeout(function(){ 
@@ -236,6 +249,9 @@ export default {
 
 .target{
   background-image: url(../img/logo.gif);
+}
+.targes{
+  background-image: url();
 }
 
 .altura{
