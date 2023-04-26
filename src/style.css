@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .botones{
+        @apply bg-slate-300 p-2 rounded-lg mr-2 text-3xl;
+    }
+    .form{
+        @apply w-40 mr-2 text-3xl;
+    }
+}
+
+.Anton{
+    font-family: Anton, sans-serif;
+}
