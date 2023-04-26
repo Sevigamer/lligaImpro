@@ -34,23 +34,25 @@
     <transition name="tarjeta">
       <div v-if="tarjeta" class="w-[650px] h-[480px] bg-red-500 absolute top-[340px] left-[760px]">
           <div class="h-4/5">
-            <div class="mt-3 ">{{ impro.tipo }}</div>
-            <div>
-              <p> " {{ impro.titulo }} "</p>
+            <div class="p-2 h-fit text-3xl uppercase bg-purple-500 items-center">
+              <p>{{impro.tipo}}</p>
+            </div>
+            <div class="h-5/6 bg-green-700 justify-center">
+              <p class="text-3xl uppercase text-ellipsis"> {{ impro.titulo }}</p>
             </div>
           </div>
-          <div class="h-1/5 flex flex-col">
+          <div class="h-1/5 flex flex-col bg-blue-700 text-lg px-2">
             <div class="flex text-white items-center ">
               <i class="fa-regular fa-clock"></i>
-              <p>{{ impro.duracion}} minutos</p>
+              <p class="ml-2">{{ impro.duracion}} minutos</p>
             </div>
-            <div class="flex text-white items-center ">
+            <div class="flex text-white items-center mt-1">
               <i class="fa-solid fa-users"></i>
-              <p>{{ impro.jugadores}}</p>
+              <p class="ml-2">{{ impro.jugadores}}</p>
             </div>
-            <div class="flex text-white items-center ">
+            <div class="flex text-white items-center mt-1">
               <i class='bx bx-category'></i>
-              <p>{{ impro.categoria}}</p>
+              <p class="ml-2">{{ impro.categoria}}</p>
             </div>
           </div>
       </div>
@@ -193,7 +195,7 @@ export default {
     },
     saveImpro(){
       this.impro.id++;
-      this.impro.titulo = this.titulo;
+      this.impro.titulo = '" '+this.titulo+' "';
       this.impro.tipo = this.tipo;
       this.impro.jugadores = this.jugadores;
       this.impro.duracion = this.duracion;
