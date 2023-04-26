@@ -4,8 +4,8 @@
     <transition name="test">
       <div v-if="marcador" class="absolute left-[100px] top-[55px] opacity-0 Anton" id="marcador">
         <div class="flex flex-col">
-          <div class="w-[98px] h-[32px] bg-red-600 relative left-[161px] text-xl text-white items-center">
-            <div class="ml-1">IMPRO {{ impro.id }}</div> 
+          <div class="w-[98px] h-[32px] bg-red-600 relative left-[161px] text-2xl text-white items-center">
+            <div class="ml-2">IMPRO {{ impro.id }}</div> 
           </div>
           <div class="flex mt-3">
             <div class="w-[162px] h-[71px] azul" id="equipoIzquierda"></div>
@@ -17,13 +17,13 @@
             <div class="w-[163px] h-[71px] rojo" id="equipoDerecha"></div>
             <div class="flex absolute left-[49px] top-[32px] w-[317px] h-[54px] bg-white">
               <div class="flex p-2 w-full h-full justify-between items-center">
-                <div class="text-2xl text-blue-500">AZL</div>
-                <div class="text-black text-2xl">{{ equipoIzq.puntos }}</div>
+                <div class="text-3xl text-blue-500 ml-4">AZL</div>
+                <div class="text-black text-4xl">{{ equipoIzq.puntos }}</div>
                 <div class="text-red-600 items-end text-lg">{{ equipoIzq.faltas }}</div>
                 <div class="text-2xl ml-2 mr-2">-</div>
                 <div class="text-red-600 items-end text-lg"> {{ equipoDer.faltas }} </div>
-                <div class="text-black text-2xl">{{ equipoDer.puntos }}</div>
-                <div class="text-2xl text-red-500">RJO</div>
+                <div class="text-black text-4xl">{{ equipoDer.puntos }}</div>
+                <div class="text-3xl text-red-500 mr-4">RJO</div>
               </div>
             </div>
           </div>
@@ -31,24 +31,26 @@
       </div>     
     </transition>
 
-    <transition name="tarjeta">
-      <div v-if="tarjeta" class="w-[650px] h-[480px] bg-red-500 absolute top-[340px] left-[760px]">
+    <transition name="fade">
+      <div v-if="tarjeta" class="w-[650px] h-[480px] absolute top-[300px] left-[635px] Anton target" id="cuadro">
           <div class="h-4/5">
-            <div class="p-2 h-fit text-3xl uppercase bg-purple-500 items-center">
+            <div class="p-2 h-fit text-3xl uppercase items-center">
               <p>{{impro.tipo}}</p>
             </div>
-            <div class="h-5/6 bg-green-700 justify-center">
-              <p class="text-3xl uppercase text-ellipsis"> {{ impro.titulo }}</p>
+            <div class="h-fulljustify-center">
+              <p class="text-3xl uppercase text-ellipsis" :class="textBig ? '':''"> {{ impro.titulo }}</p>
             </div>
           </div>
-          <div class="h-1/5 flex flex-col bg-blue-700 text-lg px-2">
-            <div class="flex text-white items-center ">
-              <i class="fa-regular fa-clock"></i>
-              <p class="ml-2">{{ impro.duracion}} minutos</p>
-            </div>
-            <div class="flex text-white items-center mt-1">
-              <i class="fa-solid fa-users"></i>
-              <p class="ml-2">{{ impro.jugadores}}</p>
+          <div class="h-1/5 flex flex-col text-lg px-2">
+            <div class="flex">
+              <div class="flex text-white items-center ">
+                <i class="fa-regular fa-clock"></i>
+                <p class="ml-2">{{ impro.duracion}} minutos</p>
+              </div>
+              <div class="flex text-white items-center ml-4">
+                <i class="fa-solid fa-users"></i>
+                <p class="ml-2">{{ impro.jugadores}}</p>
+              </div>
             </div>
             <div class="flex text-white items-center mt-1">
               <i class='bx bx-category'></i>
@@ -63,7 +65,7 @@
     
     <div class="flex">
         <button @click="inOutMarcador" class="botones">Marcador IN/OUT</button>
-        <button @click="tarjeta = !tarjeta" class="botones">Tarjeta</button>
+        <button @click="inOutTarjeta" class="botones">Tarjeta</button>
     </div>
     <div class="flex mt-2">
       <button @click="sumarPuntos(true)" class="botones">Sumar Punto Izq</button>
@@ -165,6 +167,13 @@ export default {
     }
   },
   methods:{
+    inOutTarjeta(){
+      // console.log("sdfsd");
+      // setTimeout(function(){
+      //   document.getElementById("cuadro").style.backgroundImage = "url(../img/logo.gif)";
+      // }, 100)
+      this.tarjeta = !this.tarjeta;
+    },
     inOutMarcador(){
       setTimeout(function(){ 
         document.getElementById("marcador").style.opacity = 100
@@ -209,21 +218,24 @@ export default {
 </script>
 
 <style>
-.puntos{
-  background-image: url(../img/marcador.png);
-}
 
-/* .azul{
+.azul{
   background-image: url(../img/blue.png);
 }
 .rojo{
   background-image: url(../img/red.png);
-} */
+} 
+
+/*
 .azul{
   background-image: url(../img/izq/impropenosos.png);
 }
 .rojo{
   background-image: url(../img/derecha/gladiadoras.png);
+}*/
+
+.target{
+  background-image: url(../img/logo.gif);
 }
 
 .altura{
@@ -246,12 +258,22 @@ export default {
   }
 }
 
-.tarjeta-enter-to {
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/*.tarjeta-enter-to {
 	animation: rotate-vert-center 1.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
 }
 .tarjeta-leave-to {
 	animation: rotate-vert-center 1.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both reverse;
-}
+}*/
 
 @keyframes rotate-vert-center {
   0% {
