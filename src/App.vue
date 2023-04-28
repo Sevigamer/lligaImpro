@@ -30,9 +30,10 @@
         </div>
       </div>     
     </transition>
-
-    <div v-if="tarjeta" class="w-[650px] h-[480px] absolute top-[300px] left-[635px]" :style="{ backgroundImage: 'url(' + imageUrl + ')' }">
-    </div>
+    <transition name="fadeGif">
+      <div v-if="tarjeta" class="w-[650px] h-[480px] absolute top-[300px] left-[635px]" :style="{ backgroundImage: 'url(' + imageUrl + ')' }">
+      </div>
+    </transition>
     <transition name="fade">
       <div v-if="texto" class="w-[650px] h-[480px] absolute top-[300px] left-[635px] Anton" id="texto">
         <div class="h-4/5">
@@ -191,9 +192,9 @@ export default{
       }
       else{
         this.texto = false;
-        setTimeout(() => {
-          this.tarjeta = false;
-        }, 2000)
+        this.tarjeta = false;
+        // setTimeout(() => {
+        // }, 2000)
       }
     },
     inOutMarcador(){
@@ -314,6 +315,14 @@ export default{
 
 .fade-enter-from,
 .fade-leave-to {
+  opacity: 0;
+}
+
+.fadeGif-leave-active{
+  transition: opacity 1s ease 2s;
+}
+
+.fadeGif-leave-to{
   opacity: 0;
 }
 
