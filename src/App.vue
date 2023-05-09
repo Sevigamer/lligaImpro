@@ -31,13 +31,13 @@
       </div>     
     </transition>
     <transition name="fadeGif">
-      <div v-if="tarjeta" class="w-[650px] h-[480px] absolute top-[300px] left-[635px]" :style="{ backgroundImage: 'url(' + imageUrl + ')' }">
+      <div v-if="tarjeta" class="w-[1920px] h-[1080px]" :style="{ backgroundImage: 'url(' + imageUrl + ')' }">
       </div>
     </transition>
     <transition name="fade">
       <div v-if="texto" class="w-[650px] h-[480px] absolute top-[300px] left-[635px] Anton" id="texto">
         <div class="h-4/5">
-          <div class="p-2 h-fit text-3xl uppercase text-center mt-2 ml-4 mr-4 text-white">
+          <div class="p-2 h-fit text-4xl uppercase text-center mt-2 ml-4 mr-4">
             <p>{{impro.tipo}}</p>
           </div>
           <div class="h-[332px] grid grid-cols-1 place-items-center ml-4 mr-4">
@@ -46,7 +46,7 @@
             </div>
           </div>
         </div>
-        <div class="h-fit flex flex-col text-2xl px-2 ml-4 mr-4">
+        <div class="h-fit flex text-2xl p-2 ml-4 mr-4">
           <div class="flex">
             <div class="flex items-center ">
               <i class="fa-regular fa-clock"></i>
@@ -57,62 +57,93 @@
               <p class="ml-2">{{ impro.jugadores}}</p>
             </div>
           </div>
-          <div class="flex items-center mt-1">
+          <div class="flex items-center ml-4 bg-blue-300">
             <i class='bx bx-book-open'></i>
             <p class="ml-2 uppercase">{{ impro.categoria}}</p>
           </div>
         </div>
       </div>
     </transition>
+
+    <transition name="bounce">
+      <div v-if="caca" class="bg-blue-300 absolute top-[500px] left-[250px] text-white">
+        <p> {{ improvisador.nombre }} </p>
+        <p> {{ improvisador.apellidos }} </p>
+      </div>
+    </transition>
     
   </div>
   <!-- Botones Marcador -->
-  <div class="bg-white">
-    
-    <div class="flex">
+  <div class="bg-white w-[1000px]">
+
+    <n-tabs type="line" animated>
+      <n-tab-pane name="Marcador" tab="Oasis">
         <button @click="inOutMarcador" class="botones">Marcador IN/OUT</button>
-        <button @click="inOutTarjeta(true)" class="botones">Tarjeta IN</button>
-        <button @click="inOutTarjeta(false)" class="botones">Tarjeta OUT</button>
-    </div>
-    <div class="flex flex-col mt-2">
-      <div class="flex">
-        <button @click="sumarPuntos(true)" class="botones">Sumar Punto Izq</button>
-        <button @click="restarPuntos(true)" class="botones">Restar Punto Izq</button>
-        <button @click="sumarFaltas(true)" class="botones">Sumar Falta Izq</button>
-        <button @click="restarFaltas(true)" class="botones">Restar Falta Izq</button>
-
-      </div>
-      <div class="flex mt-2">
-        <button @click="sumarPuntos(false)" class="botones">Sumar Punto Der</button>
-        <button @click="restarPuntos(false)" class="botones">Restar Punto Der</button>
-        <button @click="sumarFaltas(false)" class="botones">Sumar Falta Der</button>
-        <button @click="restarFaltas(false)" class="botones">Restar Falta Der</button>
-      </div>
-    </div>
-
-    <div class="flex mt-2">
-      <div class="form">
-        <p>Tipo de impro</p>
-        <n-select v-model:value="tipo" size="large" :options="tipos" placeholder="Tipo de impro"/>
-      </div>
-      <div class="form">
-        <p>Titulo:</p>
-        <n-input v-model:value="titulo" type="text" placeholder="Titulo" clearable/>
-      </div>
-      <div class="form">
-        <p>Num jugadores:</p>
-        <n-select v-model:value="jugadores" size="large" :options="numJug" placeholder="Num jugadores"/>
-      </div>
-      <div class="form">
-        <p>Duracion:</p>
-        <n-select v-model:value="duracion" size="large" :options="time" placeholder="Duracion"/>
-      </div>
-      <div class="form">
-        <p>Categoria:</p>
-        <n-input v-model:value="categoria" type="text" placeholder="Categoria" clearable/>
-      </div>
-      <button @click="saveImpro" class="botones">Guardar Impro</button>
-    </div>
+        <div class="flex flex-col mt-2">
+          <div class="flex">
+            <button @click="sumarPuntos(true)" class="botones">Sumar Punto Izq</button>
+            <button @click="restarPuntos(true)" class="botones">Restar Punto Izq</button>
+            <button @click="sumarFaltas(true)" class="botones">Sumar Falta Izq</button>
+            <button @click="restarFaltas(true)" class="botones">Restar Falta Izq</button>
+    
+          </div>
+          <div class="flex mt-2">
+            <button @click="sumarPuntos(false)" class="botones">Sumar Punto Der</button>
+            <button @click="restarPuntos(false)" class="botones">Restar Punto Der</button>
+            <button @click="sumarFaltas(false)" class="botones">Sumar Falta Der</button>
+            <button @click="restarFaltas(false)" class="botones">Restar Falta Der</button>
+          </div>
+        </div>
+      </n-tab-pane>
+      <n-tab-pane name="Tarjeta" tab="The Beatles">
+        <div class="flex">
+          <button @click="inOutTarjeta(true)" class="botones">Tarjeta IN</button>
+          <button @click="inOutTarjeta(false)" class="botones">Tarjeta OUT</button>
+        </div>
+        <div class="flex flex-col mt-2">
+          <div class="form">
+            <p>Tipo de impro</p>
+            <n-select v-model:value="tipo" size="large" :options="tipos" placeholder="Tipo de impro"/>
+          </div>
+          <div class="form">
+            <p>Titulo:</p>
+            <n-input v-model:value="titulo" type="text" placeholder="Titulo" clearable/>
+          </div>
+          <div class="form">
+            <p>Num jugadores:</p>
+            <n-select v-model:value="jugadores" size="large" :options="numJug" placeholder="Num jugadores"/>
+          </div>
+          <div class="form">
+            <p>Duracion:</p>
+            <n-select v-model:value="duracion" size="large" :options="time" placeholder="Duracion"/>
+          </div>
+          <div class="form">
+            <p>Categoria:</p>
+            <n-input v-model:value="categoria" type="text" placeholder="Categoria" clearable/>
+          </div>
+          <button @click="saveImpro" class="botones">Guardar Impro</button>
+        </div>
+      </n-tab-pane>
+      <n-tab-pane name="Jugadores" tab="Nirvana">
+        <div class="flex flex-col">
+          <div>
+            <n-dynamic-input v-model:value="jugadoresIzq" :on-create="onCreate">
+              <template #create-button-default>
+                <p>Añadir Jugador</p>
+              </template>
+              <template #default="{ value }">
+                <div class="flex">
+                  <n-input v-model:value="value.nombre"  type="text" placeholder="Nombre"/>
+                  <n-input v-model:value="value.apellidos" type="text" placeholder="Apellidos"/>
+                  <button @click="playerName(value.index)" class="bg-slate-300 rounded p-2">IN/OUT</button>
+                </div>
+              </template>
+            </n-dynamic-input>
+          </div>
+        </div>
+        <pre> {{ jugadoresIzq }} </pre>
+      </n-tab-pane>
+    </n-tabs>
   </div>
 </div> 
 </template>
@@ -120,15 +151,19 @@
 <script>
 import { ref } from 'vue';
 import VueCountdown from '@chenfengyuan/vue-countdown';
-import {NSelect, NInput} from 'naive-ui';
+import {NSelect, NInput, NTabs, NTabPane, NDynamicInput} from 'naive-ui';
 
 export default{
   components:{
     VueCountdown,
     NSelect,
-    NInput
+    NInput,
+    NTabs,
+    NTabPane,
+    NDynamicInput
   },
   setup(){
+    const improvisador = ref({})
     const tipo = ref()
     const titulo = ref()
     const jugadores = ref()
@@ -137,6 +172,7 @@ export default{
     const marcador = ref(false)
     const tarjeta = ref(false) 
     const texto = ref(false) 
+    const caca = ref(false) 
     const equipoIzq = ref({nombre: "", puntos: 0, faltas: 0})
     const equipoDer = ref({nombre: "", puntos: 0, faltas: 0})
     const tipos = ref([
@@ -165,12 +201,15 @@ export default{
     ])
     const impro = ref({id: 0})
     const imageUrl = ref("../img/logo.gif");
+    const jugadoresIzq = ref([])
+    const jugadoresDer = ref([])
     return{
       equipoIzq,
       equipoDer,
       marcador,
       tarjeta,
       tipos,
+      caca,
       numJug,
       time,
       impro,
@@ -180,10 +219,20 @@ export default{
       duracion, 
       categoria,
       imageUrl,
-      texto
+      texto,
+      jugadoresIzq,
+      jugadoresDer,
+      improvisador
     }
   },
   methods:{
+    onCreate(){
+      return { nombre: "", apellidos: "", index: this.jugadoresIzq.length}
+    },
+    playerName(pos){
+      this.improvisador = this.jugadoresIzq[pos];
+      this.caca = !this.caca
+    },
     inOutTarjeta(paco){
       if(paco){
         this.imageUrl = "../img/logo.gif"+"?a="+Math.random();
@@ -265,6 +314,15 @@ export default{
 </script>
 
 <style>
+.n-tabs .n-tabs-tab .n-tabs-tab__label{
+  font-size: x-large !important;
+}
+.n-base-select-menu .n-base-select-option{
+  font-size: xx-large !important;
+}
+.n-input .n-input-wrapper{
+  font-size: xx-large !important;
+}
 
 /*.azul{
   background-image: url(../img/izq/impropenosos.png);
