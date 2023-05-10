@@ -125,8 +125,14 @@
         </div>
       </n-tab-pane>
       <n-tab-pane name="Jugadores" tab="Nirvana">
-        <div class="flex flex-col">
-          <div>
+        <div class="flex flex-col w-full">
+          <div class="flex">
+            <n-input v-model:value="nombre"  type="text" placeholder="Nombre"/>
+            <n-input v-model:value="apellidos" type="text" placeholder="Apellidos"/>
+            <button @click="peopleName()" class="bg-slate-300 rounded p-2">IN/OUT</button>
+          </div>
+          <div class="">
+            <p class="text-3xl">Jugadores Izquierda</p>
             <n-dynamic-input v-model:value="jugadoresIzq" :on-create="onCreate">
               <template #create-button-default>
                 <p>Añadir Jugador</p>
@@ -135,13 +141,27 @@
                 <div class="flex">
                   <n-input v-model:value="value.nombre"  type="text" placeholder="Nombre"/>
                   <n-input v-model:value="value.apellidos" type="text" placeholder="Apellidos"/>
-                  <button @click="playerName(value.index)" class="bg-slate-300 rounded p-2">IN/OUT</button>
+                  <button @click="playerNameIzq(value.index)" class="bg-slate-300 rounded p-2">IN/OUT</button>
+                </div>
+              </template>
+            </n-dynamic-input>
+          </div>
+          <div class="">
+            <p class="text-3xl">Jugadores Derecha</p>
+            <n-dynamic-input v-model:value="jugadoresDer" :on-create="onCreate2">
+              <template #create-button-default>
+                <p>Añadir Jugador</p>
+              </template>
+              <template #default="{ value }">
+                <div class="flex">
+                  <n-input v-model:value="value.nombre"  type="text" placeholder="Nombre"/>
+                  <n-input v-model:value="value.apellidos" type="text" placeholder="Apellidos"/>
+                  <button @click="playerNameDer(value.index)" class="bg-slate-300 rounded p-2">IN/OUT</button>
                 </div>
               </template>
             </n-dynamic-input>
           </div>
         </div>
-        <pre> {{ jugadoresIzq }} </pre>
       </n-tab-pane>
     </n-tabs>
   </div>
@@ -229,9 +249,16 @@ export default{
     onCreate(){
       return { nombre: "", apellidos: "", index: this.jugadoresIzq.length}
     },
-    playerName(pos){
+    onCreate2(){
+      return { nombre: "", apellidos: "", index: this.jugadoresDer.length}
+    },
+    playerNameIzq(pos){
       this.improvisador = this.jugadoresIzq[pos];
       this.caca = !this.caca
+    },
+    playerNameDer(pos){
+      this.improvisador = this.jugadoresDer[pos];
+      this.cacaDer = !this.cacaDer
     },
     inOutTarjeta(paco){
       if(paco){
