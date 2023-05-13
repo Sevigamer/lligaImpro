@@ -4,28 +4,29 @@
     <transition name="test">
       <div v-if="marcador" class="absolute left-[100px] top-[55px] opacity-0 Anton" id="marcador">
         <div class="flex flex-col">
-          <div class="w-[98px] h-[32px] bg-red-600 relative left-[161px] text-2xl text-white items-center">
+          <div class="w-[98px] h-[32px] bg-red-600 relative left-[115px] text-2xl text-white items-center">
             <div class="ml-2">IMPRO {{ impro.id }}</div> 
           </div>
-          <div class="flex mt-3">
-            <div class="w-[162px] h-[71px] azul" id="equipoIzquierda"></div>
-            <div class="bg-black text-white text-xl text-center w-[96px] h-[30px] relative top-[41px]" id="crono">
+          <div class="flex">
+            <div class="flex  w-[287px] h-[54px] bg-blue-200">
+              <div class="flex p-2 w-full h-full justify-between items-center">
+                <!-- <div class="text-3xl text-blue-500 ml-4">AZL</div> -->
+                <div class="text-black text-4xl ml-10">{{ equipoIzq.puntos }}</div>
+                <div class="text-red-600 items-end text-lg">{{ equipoIzq.faltas }}</div>
+                <div class="text-2xl ml-2 mr-2">-</div>
+                <div class="text-red-600 items-end text-lg"> {{ equipoDer.faltas }} </div>
+                <div class="text-black text-4xl mr-10">{{ equipoDer.puntos }}</div>
+                <!-- <div class="text-3xl text-red-500 mr-4">RJO</div> -->
+              </div>
+            </div>
+            <div class="w-[75px] h-[50px] azul" id="equipoIzquierda"></div>
+            <div class="bg-black text-white text-xl text-center w-[80px] h-[30px] relative top-[41px]" id="crono">
               <vue-countdown :time="duracion*60*1000" v-slot="{minutes, seconds}">
                 {{ String(minutes).padStart(2,'0') }}:{{ String(seconds).padStart(2,'0') }}
               </vue-countdown>
             </div>
-            <div class="w-[163px] h-[71px] rojo" id="equipoDerecha"></div>
-            <div class="flex absolute left-[49px] top-[32px] w-[317px] h-[54px] bg-white">
-              <div class="flex p-2 w-full h-full justify-between items-center">
-                <div class="text-3xl text-blue-500 ml-4">AZL</div>
-                <div class="text-black text-4xl">{{ equipoIzq.puntos }}</div>
-                <div class="text-red-600 items-end text-lg">{{ equipoIzq.faltas }}</div>
-                <div class="text-2xl ml-2 mr-2">-</div>
-                <div class="text-red-600 items-end text-lg"> {{ equipoDer.faltas }} </div>
-                <div class="text-black text-4xl">{{ equipoDer.puntos }}</div>
-                <div class="text-3xl text-red-500 mr-4">RJO</div>
-              </div>
-            </div>
+            <div class="w-[75px] h-[50px] rojo" id="equipoDerecha"></div>
+            
           </div>
         </div>
       </div>     
