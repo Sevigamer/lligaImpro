@@ -4,40 +4,40 @@
     <transition name="test">
       <div v-if="marcador" class="absolute left-[100px] top-[55px] opacity-0 Anton" id="marcador">
         <div class="flex flex-col">
-          <div class="w-[98px] h-[32px] bg-red-600 relative left-[115px] text-2xl text-white items-center">
+          <div class="w-[98px] h-[32px] bg-[#cc0000] relative left-[115px] text-2xl text-white items-center">
             <div class="ml-2">IMPRO {{ impro.id }}</div> 
           </div>
           <div class="flex">
-            <div class="flex  w-[287px] h-[54px] bg-blue-200">
+            <div class="flex w-[287px] h-[50px] bg-white ml-6">
               <div class="flex p-2 w-full h-full justify-between items-center">
                 <!-- <div class="text-3xl text-blue-500 ml-4">AZL</div> -->
-                <div class="text-black text-4xl ml-10">{{ equipoIzq.puntos }}</div>
+                <div class="text-black text-4xl ml-16">{{ equipoIzq.puntos }}</div>
                 <div class="text-red-600 items-end text-lg">{{ equipoIzq.faltas }}</div>
                 <div class="text-2xl ml-2 mr-2">-</div>
                 <div class="text-red-600 items-end text-lg"> {{ equipoDer.faltas }} </div>
-                <div class="text-black text-4xl mr-10">{{ equipoDer.puntos }}</div>
+                <div class="text-black text-4xl mr-16">{{ equipoDer.puntos }}</div>
                 <!-- <div class="text-3xl text-red-500 mr-4">RJO</div> -->
               </div>
             </div>
-            <div class="w-[75px] h-[50px] azul" id="equipoIzquierda"></div>
-            <div class="bg-black text-white text-xl text-center w-[80px] h-[30px] relative top-[41px]" id="crono">
+            <div class="w-[75px] h-[50px] azul absolute top-[42px]" id="equipoIzquierda"></div>
+            <div class="bg-white text-xl text-center w-[80px] h-[30px] absolute top-[82px] left-[127px]" id="crono">
               <vue-countdown :time="duracion*60*1000" v-slot="{minutes, seconds}">
                 {{ String(minutes).padStart(2,'0') }}:{{ String(seconds).padStart(2,'0') }}
               </vue-countdown>
             </div>
-            <div class="w-[75px] h-[50px] rojo" id="equipoDerecha"></div>
+            <div class="w-[75px] h-[50px] rojo absolute top-[42px] left-[260px]" id="equipoDerecha"></div>
             
           </div>
         </div>
       </div>     
     </transition>
-    <transition name="fadeGif">
+    <!-- <transition name="fadeGif">
       <div v-if="tarjeta" class="w-[1920px] h-[1080px]" :style="{ backgroundImage: 'url(' + imageUrl + ')' }">
       </div>
-    </transition>
+    </transition> -->
     <transition name="fade">
-      <div v-if="texto" class="w-[650px] h-[480px] absolute top-[300px] left-[635px] Anton" id="texto">
-        <div class="h-4/5">
+      <div v-if="texto" class="w-[650px] h-[480px] absolute top-[300px] left-[635px] Anton logo" id="texto">
+        <div class="h-4/5 mt-4">
           <div class="p-2 h-fit text-4xl uppercase text-center mt-2 ml-4 mr-4">
             <p>{{impro.tipo}}</p>
           </div>
@@ -47,18 +47,16 @@
             </div>
           </div>
         </div>
-        <div class="h-fit flex text-2xl p-2 ml-4 mr-4">
-          <div class="flex">
-            <div class="flex items-center ">
-              <i class="fa-regular fa-clock"></i>
-              <p class="ml-2">{{ impro.duracion}} MINUTOS</p>
-            </div>
-            <div class="flex items-center ml-4">
-              <i class="fa-solid fa-users"></i>
-              <p class="ml-2">{{ impro.jugadores}}</p>
-            </div>
+        <div class="h-fit flex text-2xl p-2 justify-center">
+          <div class="flex items-center ">
+            <i class="fa-regular fa-clock"></i>
+            <p class="ml-2">{{ impro.duracion}}</p>
           </div>
-          <div class="flex items-center ml-4 bg-blue-300">
+          <div class="flex items-center ml-4">
+            <i class="fa-solid fa-users"></i>
+            <p class="ml-2">{{ impro.jugadores}}</p>
+          </div>
+          <div class="flex items-center ml-4">
             <i class='bx bx-book-open'></i>
             <p class="ml-2 uppercase">{{ impro.categoria}}</p>
           </div>
@@ -66,10 +64,42 @@
       </div>
     </transition>
 
+    <transition name="nombreIzq">
+      <div v-if="nJugadorIzq" class="opacity-0" id="nIzq">
+        <div class="w-[245px] h-[90px] absolute top-[875px] left-[115px] bg-white">
+          <div class="grid h-full Anton capitalize justify-items-end px-4 py-2">
+            <div class="text-3xl"> {{ improvisador.nombre }} </div>
+            <div class="text-2xl text-blue-600"> {{ improvisador.apellidos }} </div>
+          </div>
+        </div>
+        <div class="bg-blue-600 w-[162px] h-[90px] absolute top-[895px] left-[33px]">
+        </div>
+      </div>
+    </transition>
+
     <transition name="bounce">
-      <div v-if="caca" class="bg-blue-300 absolute top-[500px] left-[250px] text-white">
-        <p> {{ improvisador.nombre }} </p>
-        <p> {{ improvisador.apellidos }} </p>
+      <div v-if="nJugadorDer" class="opacity-0" id="nDer">
+        <div class="w-[245px] h-[90px] absolute top-[875px] left-[1560px] bg-white">
+          <div class="flex flex-col h-full Anton capitalize  px-4 py-2">
+            <div class="text-3xl"> {{ improvisador.nombre }} </div>
+            <div class="text-2xl text-blue-600"> {{ improvisador.apellidos }} </div>
+          </div>
+        </div>
+        <div class="bg-blue-600 w-[162px] h-[90px] absolute top-[895px] left-[1724px]">
+        </div>
+      </div>
+    </transition>
+
+    <transition name="bounce">
+      <div v-if="nPresentador">
+        <div class="w-[245px] h-[90px] absolute top-[875px] left-[115px]">
+          <div class="grid h-full Anton capitalize justify-items-end px-4 py-2">
+            <div class="text-3xl"> {{ nombre }} </div>
+            <div class="text-2xl text-blue-600"> {{ apellidos }} </div>
+          </div>
+        </div>
+        <div class="bg-blue-600 w-[162px] h-[90px] absolute top-[895px] left-[33px]">
+        </div>
       </div>
     </transition>
     
@@ -130,7 +160,7 @@
           <div class="flex">
             <n-input v-model:value="nombre"  type="text" placeholder="Nombre"/>
             <n-input v-model:value="apellidos" type="text" placeholder="Apellidos"/>
-            <button @click="peopleName()" class="bg-slate-300 rounded p-2">IN/OUT</button>
+            <button @click="nPresentador = !nPresentador" class="bg-slate-300 rounded p-2">IN/OUT</button>
           </div>
           <div class="">
             <p class="text-3xl">Jugadores Izquierda</p>
@@ -188,14 +218,18 @@ export default{
     const tipo = ref()
     const titulo = ref()
     const jugadores = ref()
+    const nombre = ref()
+    const apellidos = ref()
     const duracion = ref()
     const categoria = ref()
     const marcador = ref(false)
     const tarjeta = ref(false) 
     const texto = ref(false) 
-    const caca = ref(false) 
-    const equipoIzq = ref({nombre: "", puntos: 0, faltas: 0})
-    const equipoDer = ref({nombre: "", puntos: 0, faltas: 0})
+    const nJugadorIzq = ref(false) 
+    const nJugadorDer = ref(false) 
+    const nPresentador = ref(false) 
+    const equipoIzq = ref({puntos: 0, faltas: 0})
+    const equipoDer = ref({puntos: 0, faltas: 0})
     const tipos = ref([
       {label: "Mixta", value:"Mixta"},
       {label: "Seguida", value:"Seguida"},
@@ -230,7 +264,11 @@ export default{
       marcador,
       tarjeta,
       tipos,
-      caca,
+      nJugadorIzq,
+      nJugadorDer,
+      nPresentador,
+      nombre,
+      apellidos,
       numJug,
       time,
       impro,
@@ -254,12 +292,15 @@ export default{
       return { nombre: "", apellidos: "", index: this.jugadoresDer.length}
     },
     playerNameIzq(pos){
+      setTimeout(function(){ 
+        document.getElementById("nIzq").style.opacity = 100
+       }, 200);
       this.improvisador = this.jugadoresIzq[pos];
-      this.caca = !this.caca
+      this.nJugadorIzq = !this.nJugadorIzq
     },
     playerNameDer(pos){
       this.improvisador = this.jugadoresDer[pos];
-      this.cacaDer = !this.cacaDer
+      this.nJugadorDer = !this.nJugadorDer
     },
     inOutTarjeta(paco){
       if(paco){
@@ -360,18 +401,15 @@ export default{
 } */
 
 
+.logo{
+  background-image: url(../img/tarjeta.jpeg);
+}
+
 .azul{
   background-image: url(../img/blue.png);
 }
 .rojo{
   background-image: url(../img/red.png);
-}
-
-.target{
-  background-image: url(../img/logo.gif);
-}
-.targes{
-  background-image: url();
 }
 
 .altura{
@@ -461,6 +499,22 @@ export default{
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+.nombreIzq-enter-to {
+	animation: slide-in-left 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+.nombreIzq-leave-to {
+	animation: slide-in-left 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
+}
+
+@keyframes slide-in-left {
+  0% {
+    transform: translateX(-1000px);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
 </style>
