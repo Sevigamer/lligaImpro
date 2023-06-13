@@ -64,6 +64,10 @@
       </div>
     </transition>
 
+    <div class="flex">
+      <div class="bg-red-500 w-[50px] h-[50px]"></div>
+    </div>
+
     <transition name="nombreIzq">
       <div v-if="nJugadorIzq" class="opacity-0" id="nIzq">
         <div class="w-[245px] h-[90px] absolute top-[875px] left-[115px] bg-white">
@@ -77,28 +81,15 @@
       </div>
     </transition>
 
-    <transition name="bounce">
+    <transition name="nombreDer">
       <div v-if="nJugadorDer" class="opacity-0" id="nDer">
         <div class="w-[245px] h-[90px] absolute top-[875px] left-[1560px] bg-white">
           <div class="flex flex-col h-full Anton capitalize  px-4 py-2">
             <div class="text-3xl"> {{ improvisador.nombre }} </div>
-            <div class="text-2xl text-blue-600"> {{ improvisador.apellidos }} </div>
+            <div class="text-2xl text-red-600"> {{ improvisador.apellidos }} </div>
           </div>
         </div>
-        <div class="bg-blue-600 w-[162px] h-[90px] absolute top-[895px] left-[1724px]">
-        </div>
-      </div>
-    </transition>
-
-    <transition name="bounce">
-      <div v-if="nPresentador">
-        <div class="w-[245px] h-[90px] absolute top-[875px] left-[115px]">
-          <div class="grid h-full Anton capitalize justify-items-end px-4 py-2">
-            <div class="text-3xl"> {{ nombre }} </div>
-            <div class="text-2xl text-blue-600"> {{ apellidos }} </div>
-          </div>
-        </div>
-        <div class="bg-blue-600 w-[162px] h-[90px] absolute top-[895px] left-[33px]">
+        <div class="bg-red-600 w-[162px] h-[90px] absolute top-[895px] left-[1724px]">
         </div>
       </div>
     </transition>
@@ -108,7 +99,7 @@
   <div class="bg-white w-[1000px]">
 
     <n-tabs type="line" animated>
-      <n-tab-pane name="Marcador" tab="Oasis">
+      <n-tab-pane name="Marcador" tab="Marcador">
         <button @click="inOutMarcador" class="botones">Marcador IN/OUT</button>
         <div class="flex flex-col mt-2">
           <div class="flex">
@@ -126,7 +117,7 @@
           </div>
         </div>
       </n-tab-pane>
-      <n-tab-pane name="Tarjeta" tab="The Beatles">
+      <n-tab-pane name="Tarjeta" tab="Tarjeta">
         <div class="flex">
           <button @click="inOutTarjeta(true)" class="botones">Tarjeta IN</button>
           <button @click="inOutTarjeta(false)" class="botones">Tarjeta OUT</button>
@@ -155,7 +146,7 @@
           <button @click="saveImpro" class="botones">Guardar Impro</button>
         </div>
       </n-tab-pane>
-      <n-tab-pane name="Jugadores" tab="Nirvana">
+      <n-tab-pane name="Jugadores" tab="Jugadores">
         <div class="flex flex-col w-full">
           <div class="flex">
             <n-input v-model:value="nombre"  type="text" placeholder="Nombre"/>
@@ -299,11 +290,14 @@ export default{
       this.nJugadorIzq = !this.nJugadorIzq
     },
     playerNameDer(pos){
+      setTimeout(function(){ 
+        document.getElementById("nDer").style.opacity = 100
+       }, 200);
       this.improvisador = this.jugadoresDer[pos];
       this.nJugadorDer = !this.nJugadorDer
     },
-    inOutTarjeta(paco){
-      if(paco){
+    inOutTarjeta(entrada){
+      if(entrada){
         this.imageUrl = "../img/logo.gif"+"?a="+Math.random();
         this.tarjeta = true;
         this.texto = true;
@@ -311,8 +305,6 @@ export default{
       else{
         this.texto = false;
         this.tarjeta = false;
-        // setTimeout(() => {
-        // }, 2000)
       }
     },
     inOutMarcador(){
@@ -510,6 +502,22 @@ export default{
 }
 
 @keyframes slide-in-left {
+  0% {
+    transform: translateX(-1000px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.nombreDer-enter-to {
+	animation: slide-in-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+.nombreDer-leave-to {
+	animation: slide-in-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
+}
+
+@keyframes slide-in-right {
   0% {
     transform: translateX(-1000px);
   }
