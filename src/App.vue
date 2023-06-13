@@ -31,42 +31,49 @@
         </div>
       </div>     
     </transition>
-    <!-- <transition name="fadeGif">
-      <div v-if="tarjeta" class="w-[1920px] h-[1080px]" :style="{ backgroundImage: 'url(' + imageUrl + ')' }">
-      </div>
-    </transition> -->
-    <transition name="fade">
-      <div v-if="texto" class="w-[650px] h-[480px] absolute top-[300px] left-[635px] Anton logo" id="texto">
-        <div class="h-4/5 mt-4">
-          <div class="p-2 h-fit text-4xl uppercase text-center mt-2 ml-4 mr-4">
-            <p>{{impro.tipo}}</p>
-          </div>
-          <div class="h-[332px] grid grid-cols-1 place-items-center ml-4 mr-4">
-            <div>
-              <p class="text-3xl uppercase text-ellipsis text-center" :class="impro.titulo.length < 10 ? 'text-8xl':'text-5xl'"> {{ impro.titulo }}</p>
+    <transition name="test">
+      <div v-if="crono" class="absolute left-[920px] top-[55px] opacity-0 Anton" id="crono">
+            <div class="bg-white text-5xl text-center w-[80px] h-[60px] p-2" id="crono">
+              <vue-countdown :time="0.5*60*1000" v-slot="{minutes, seconds}">
+                {{ String(seconds).padStart(2,'0') }}
+              </vue-countdown>
             </div>
+      </div>     
+    </transition>
+    <transition name="tarjeta">
+      <div v-if="texto" class="w-[1066px] h-[190px] absolute top-[784px] left-[427px] Anton target" id="texto">
+        <div class="flex flex-col w-[892px] h-full relative left-[174px] uppercase text-white">
+          <div class="flex h-[65px] w-full text-4xl items-center">
+            <div class="flex w-[200px] items-center">
+              <div class="border-2 border-white p-2">
+                <p> {{ "#"+ impro.id }} </p>
+              </div>
+              <div class="ml-8">
+                <p> {{ impro.tipo }} </p>
+              </div>
+            </div>
+              <div class="flex w-full p-2 ml-5">
+                <div class="flex items-center mr-5">
+                  <i class="fa-regular fa-clock mr-4"></i>
+                  <p v-if="impro.duracion == 0"> INDEF </p>
+                  <p v-else> {{ impro.duracion }} </p>
+                </div>
+                <div class="flex  items-center mr-5">
+                  <i class="fa-solid fa-users mr-4"></i>
+                  <p> {{ impro.jugadores }} </p>
+                </div>
+                <div class="flex items-center">
+                  <i class='bx bx-book-open mr-4'></i>
+                  <p> {{ impro.categoria }} </p>
+                </div>
+              </div>
           </div>
-        </div>
-        <div class="h-fit flex text-2xl p-2 justify-center">
-          <div class="flex items-center ">
-            <i class="fa-regular fa-clock"></i>
-            <p class="ml-2">{{ impro.duracion}}</p>
-          </div>
-          <div class="flex items-center ml-4">
-            <i class="fa-solid fa-users"></i>
-            <p class="ml-2">{{ impro.jugadores}}</p>
-          </div>
-          <div class="flex items-center ml-4">
-            <i class='bx bx-book-open'></i>
-            <p class="ml-2 uppercase">{{ impro.categoria}}</p>
+          <div class="h-[125px]w-full p-2" :class="impro.titulo.length < 10 ? 'text-8xl':'text-5xl'">
+            {{ impro.titulo }}
           </div>
         </div>
       </div>
     </transition>
-
-    <div class="flex">
-      <div class="bg-red-500 w-[50px] h-[50px]"></div>
-    </div>
 
     <transition name="nombreIzq">
       <div v-if="nJugadorIzq" class="opacity-0" id="nIzq">
@@ -119,8 +126,7 @@
       </n-tab-pane>
       <n-tab-pane name="Tarjeta" tab="Tarjeta">
         <div class="flex">
-          <button @click="inOutTarjeta(true)" class="botones">Tarjeta IN</button>
-          <button @click="inOutTarjeta(false)" class="botones">Tarjeta OUT</button>
+          <button @click="inOutTarjeta()" class="botones">Tarjeta/Crono IN/OUT</button>
         </div>
         <div class="flex flex-col mt-2">
           <div class="form">
@@ -214,6 +220,7 @@ export default{
     const duracion = ref()
     const categoria = ref()
     const marcador = ref(false)
+    const crono = ref(false)
     const tarjeta = ref(false) 
     const texto = ref(false) 
     const nJugadorIzq = ref(false) 
@@ -222,9 +229,9 @@ export default{
     const equipoIzq = ref({puntos: 0, faltas: 0})
     const equipoDer = ref({puntos: 0, faltas: 0})
     const tipos = ref([
-      {label: "Mixta", value:"Mixta"},
-      {label: "Seguida", value:"Seguida"},
-      {label: "Comparada", value:"Comparada"},
+      {label: "Mixta", value:"MXT"},
+      {label: "Seguida", value:"SEG"},
+      {label: "Comparada", value:"CMP"},
     ])
     const numJug = ref([
       {label: "1", value: "1"},
@@ -232,7 +239,7 @@ export default{
       {label: "3", value: "3"},
       {label: "4", value: "4"},
       {label: "Todos", value: "Todos"},
-      {label: "Indefinido", value: "Indefinido"},
+      {label: "Indefinido", value: "Indef"},
     ])
     const time = ref([
       {label: "30 segundos", value: 0.5},
@@ -244,6 +251,7 @@ export default{
       {label: "3,5 minuto", value: 3.5},
       {label: "4 minuto", value: 4},
       {label: "4,5 minuto", value: 4.5},
+      {label: "Idefinido", value: 0},
     ])
     const impro = ref({id: 0})
     const imageUrl = ref("../img/logo.gif");
@@ -251,6 +259,7 @@ export default{
     const jugadoresDer = ref([])
     return{
       equipoIzq,
+      crono,
       equipoDer,
       marcador,
       tarjeta,
@@ -296,23 +305,19 @@ export default{
       this.improvisador = this.jugadoresDer[pos];
       this.nJugadorDer = !this.nJugadorDer
     },
-    inOutTarjeta(entrada){
-      if(entrada){
-        this.imageUrl = "../img/logo.gif"+"?a="+Math.random();
-        this.tarjeta = true;
-        this.texto = true;
-      }
-      else{
-        this.texto = false;
-        this.tarjeta = false;
-      }
+    inOutTarjeta(){
+      setTimeout(function(){ 
+        document.getElementById("crono").style.opacity = 100
+       }, 200);
+       this.crono = !this.crono;
+       this.texto = !this.texto;
     },
     inOutMarcador(){
       setTimeout(function(){ 
         document.getElementById("marcador").style.opacity = 100
        }, 200);
        this.marcador = !this.marcador;
-    }, 
+    },
     sumarPuntos(equipo){
       if(equipo)
         this.equipoIzq.puntos += 1;
@@ -361,7 +366,7 @@ export default{
     },
     saveImpro(){
       this.impro.id++;
-      this.impro.titulo = '" '+this.titulo+' "';
+      this.impro.titulo = this.titulo;
       this.impro.tipo = this.tipo;
       this.impro.jugadores = this.jugadores;
       this.impro.duracion = this.duracion;
@@ -385,14 +390,6 @@ export default{
   font-size: xx-large !important;
 }
 
-/*.azul{
-  background-image: url(../img/izq/impropenosos.png);
-}
-.rojo{
-  background-image: url(../img/derecha/improvsessio.png);
-} */
-
-
 .logo{
   background-image: url(../img/tarjeta.jpeg);
 }
@@ -402,6 +399,10 @@ export default{
 }
 .rojo{
   background-image: url(../img/red.png);
+}
+
+.target{
+  background-image: url(../img/tarjeta.png);
 }
 
 .altura{
@@ -434,13 +435,6 @@ export default{
   opacity: 0;
 }
 
-.fadeGif-leave-active{
-  transition: opacity 1s ease 2s;
-}
-
-.fadeGif-leave-to{
-  opacity: 0;
-}
 
 /*.tarjeta-enter-to {
 	animation: rotate-vert-center 1.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
@@ -495,10 +489,10 @@ export default{
 }
 
 .nombreIzq-enter-to {
-	animation: slide-in-left 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 .nombreIzq-leave-to {
-	animation: slide-in-left 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
+	animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
 }
 
 @keyframes slide-in-left {
@@ -511,15 +505,32 @@ export default{
 }
 
 .nombreDer-enter-to {
-	animation: slide-in-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	animation: slide-in-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 .nombreDer-leave-to {
-	animation: slide-in-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
+	animation: slide-in-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
 }
 
 @keyframes slide-in-right {
   0% {
-    transform: translateX(-1000px);
+    transform: translateX(1000px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
+.tarjeta-enter-to {
+	animation: mostrar-objeto 1s forwards;
+}
+.tarjeta-leave-to {
+	animation:  mostrar-objeto 1s forwards reverse;
+}
+
+@keyframes mostrar-objeto {
+  0% {
+    transform: translateX(-2000px);
   }
   100% {
     transform: translateX(0);
