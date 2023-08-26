@@ -100,6 +100,10 @@
         </div>
       </div>
     </transition>
+
+    <div v-if="estadistica" class="w-full Anton">
+      <Radar :data="data" :options="options" />
+    </div>
     
   </div>
   <!-- Botones Marcador -->
@@ -108,6 +112,8 @@
     <n-tabs type="line" animated>
       <n-tab-pane name="Marcador" tab="Marcador">
         <button @click="inOutMarcador" class="botones">Marcador IN/OUT</button>
+        <button @click="estadistica = !estadistica"  class="botones">Stats</button>
+        <button @click="ecambio"  class="botones">Stats Cambio</button>
         <div class="flex flex-col mt-2">
           <div class="flex">
             <button @click="sumarPuntos(true)" class="botones">Sumar Punto Izq</button>
@@ -200,6 +206,18 @@
 import { ref } from 'vue';
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import {NSelect, NInput, NTabs, NTabPane, NDynamicInput} from 'naive-ui';
+import {
+  Chart as ChartJS,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend
+} from 'chart.js'
+import { Radar } from 'vue-chartjs'
+ChartJS.register(RadialLinearScale,PointElement,LineElement,Filler,Tooltip,Legend)
+
 
 export default{
   components:{
@@ -208,7 +226,8 @@ export default{
     NInput,
     NTabs,
     NTabPane,
-    NDynamicInput
+    NDynamicInput,
+    Radar
   },
   setup(){
     const improvisador = ref({})
@@ -226,6 +245,7 @@ export default{
     const nJugadorIzq = ref(false) 
     const nJugadorDer = ref(false) 
     const nPresentador = ref(false) 
+    const estadistica = ref(false)
     const equipoIzq = ref({puntos: 0, faltas: 0})
     const equipoDer = ref({puntos: 0, faltas: 0})
     const tipos = ref([
@@ -257,6 +277,41 @@ export default{
     const imageUrl = ref("../img/logo.gif");
     const jugadoresIzq = ref([])
     const jugadoresDer = ref([])
+    const data = {
+      labels: [
+        'TÉCNICA',
+        'DIBUJO',
+        'ORIGINALIDAD',
+        'COMEDIA',
+        'RECURSOS'
+      ],
+      datasets: [
+        {
+          label: 'Joel',
+          fill: true,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgb(255, 99, 132)',
+          pointBackgroundColor: 'rgb(255, 99, 132)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgb(255, 99, 132)',
+          data: [85, 85, 82, 78, 84]
+        }
+      ]
+    }
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          angleLines: {
+              display: false
+          },
+          suggestedMin: 50,
+          suggestedMax: 100
+        }
+      }
+    }
     return{
       equipoIzq,
       crono,
@@ -281,10 +336,16 @@ export default{
       texto,
       jugadoresIzq,
       jugadoresDer,
-      improvisador
+      improvisador,
+      estadistica,
+      data,
+      options
     }
   },
   methods:{
+    ecambio(){
+      this.data.datasets[0].data = [92, 84,79 ,77,83]
+    },
     onCreate(){
       return { nombre: "", apellidos: "", index: this.jugadoresIzq.length}
     },

@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-countdown": "^2.1.1",
+    "chart.js": "^4.3.3",
     "vue": "^3.2.47",
+    "vue-chartjs": "^5.2.0",
     "vue3-flip-countdown": "^0.1.6"
   },
   "devDependencies": {
