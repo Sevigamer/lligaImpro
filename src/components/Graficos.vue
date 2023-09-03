@@ -108,7 +108,6 @@
   </div>
   <!-- Botones Marcador -->
   <div class="bg-white w-[1000px]">
-
     <n-tabs type="line" animated>
       <n-tab-pane name="Marcador" tab="Marcador">
         <button @click="inOutMarcador" class="botones">Marcador IN/OUT</button>
@@ -165,35 +164,32 @@
             <n-input v-model:value="apellidos" type="text" placeholder="Apellidos"/>
             <button @click="nPresentador = !nPresentador" class="bg-slate-300 rounded p-2">IN/OUT</button>
           </div>
-          <div class="">
-            <p class="text-3xl">Jugadores Izquierda</p>
-            <n-dynamic-input v-model:value="jugadoresIzq" :on-create="onCreate">
-              <template #create-button-default>
-                <p>Añadir Jugador</p>
-              </template>
-              <template #default="{ value }">
-                <div class="flex">
-                  <n-input v-model:value="value.nombre"  type="text" placeholder="Nombre"/>
-                  <n-input v-model:value="value.apellidos" type="text" placeholder="Apellidos"/>
-                  <button @click="playerNameIzq(value.index)" class="bg-slate-300 rounded p-2">IN/OUT</button>
-                </div>
-              </template>
-            </n-dynamic-input>
+          <div v-if="jugadoresIzq.length == 0" class="flex">
+            <p class="text-3xl">Equipo IZQ</p>
+            <n-select v-model:value="equipoIzq.id" size="large" :options="equipos"/>
+            <p class="text-3xl">Equipo DER</p>
+            <n-select v-model:value="equipoDer.id" size="large" :options="equipos"/>
+            <button @click="getImprovisadores" class="botones">Guardar</button>
           </div>
-          <div class="">
-            <p class="text-3xl">Jugadores Derecha</p>
-            <n-dynamic-input v-model:value="jugadoresDer" :on-create="onCreate2">
-              <template #create-button-default>
-                <p>Añadir Jugador</p>
-              </template>
-              <template #default="{ value }">
-                <div class="flex">
-                  <n-input v-model:value="value.nombre"  type="text" placeholder="Nombre"/>
-                  <n-input v-model:value="value.apellidos" type="text" placeholder="Apellidos"/>
-                  <button @click="playerNameDer(value.index)" class="bg-slate-300 rounded p-2">IN/OUT</button>
-                </div>
-              </template>
-            </n-dynamic-input>
+          <div v-else class="flex  w-full">
+            <div class="flex justify-between flex-col w-1/2">
+              <p class="text-3xl">Jugadores Izquierda</p>
+              <div v-for="improvisador in jugadoresIzq" :key="improvisador.id" class="flex items-center">
+                <p class="mr-2 uppercase "> {{ improvisador.name }} </p>
+                <button @click="playerNameIzq(improvisador)" class="bg-slate-300 rounded p-2 mr-2">IN/OUT</button>
+                <button class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
+                <button class="bg-slate-300 rounded p-2">STATS DER</button>
+              </div>
+            </div>
+            <div class="flexjustify-between flex-col w-1/2">
+              <p class="text-3xl">Jugadores Derecha</p>
+              <div v-for="improvisador in jugadoresDer" :key="improvisador.id" class="flex items-center">
+                <p class="mr-2 uppercase "> {{ improvisador.name }} </p>
+                <button @click="playerNameDer(improvisador)" class="bg-slate-300 rounded p-2 mr-2">IN/OUT</button>
+                <button class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
+                <button class="bg-slate-300 rounded p-2">STATS DER</button>
+              </div>
+            </div>
           </div>
         </div>
       </n-tab-pane>
@@ -203,9 +199,10 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { ref } from 'vue';
 import VueCountdown from '@chenfengyuan/vue-countdown';
-import {NSelect, NInput, NTabs, NTabPane, NDynamicInput} from 'naive-ui';
+import {NSelect, NInput, NTabs, NTabPane} from 'naive-ui';
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -226,7 +223,6 @@ export default{
     NInput,
     NTabs,
     NTabPane,
-    NDynamicInput,
     Radar
   },
   setup(){
@@ -277,6 +273,14 @@ export default{
     const imageUrl = ref("../img/logo.gif");
     const jugadoresIzq = ref([])
     const jugadoresDer = ref([])
+    const equipos = ref([
+      {label:"Dreamteam", value: 1},
+      {label:"Emta", value: 2},
+      {label:"Improvsessio", value: 3},
+      {label:"Gladiadoras", value: 4},
+      {label:"Aspaiet", value: 5},
+      {label:"Impropenosos", value: 6},
+    ])
     const data = {
       labels: [
         'TÉCNICA',
@@ -339,18 +343,20 @@ export default{
       improvisador,
       estadistica,
       data,
-      options
+      options,
+      equipos
     }
   },
   methods:{
-    ecambio(){
-      this.data.datasets[0].data = [92, 84,79 ,77,83]
-    },
-    onCreate(){
-      return { nombre: "", apellidos: "", index: this.jugadoresIzq.length}
-    },
-    onCreate2(){
-      return { nombre: "", apellidos: "", index: this.jugadoresDer.length}
+    async getImprovisadores(){
+      await axios.get(`http://lligaimproback.test/api/improvisadores/${this.equipoIzq.id}`)
+      .then(response => {
+        this.jugadoresIzq = response.data
+      })
+      await axios.get(`http://lligaimproback.test/api/improvisadores/${this.equipoDer.id}`)
+      .then(response => {
+        this.jugadoresDer = response.data
+      })
     },
     playerNameIzq(pos){
       setTimeout(function(){ 

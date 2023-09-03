@@ -4,6 +4,10 @@ import Musica from './components/Musica.vue'
 
 const routes = [
     {
+        path:'/',
+        redirect: '/graficos'
+    },
+    {
         path:'/graficos',
         name: 'graficos',
         component: Graficos
