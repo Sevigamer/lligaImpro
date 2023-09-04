@@ -101,6 +101,37 @@
       </div>
     </transition>
 
+    <div class="w-[538px] h-[697px] absolute top-[175px] left-[118px] flex flex-col statsImprovsessio" >
+      <div class="h-[114px] w-full uppercase flex items-center justify-center">
+        <div class="text-white text-7xl Anton">{{ improvisadorIzq.name + " " + improvisadorIzq.apellidos }}</div>
+      </div>
+      <div class="">
+        <div class="Anton flex flex-col mr-4 ml-4 text-5xl text-white uppercase">
+          <div class="flex justify-between mt-4">
+            <p>ORIGEN:</p>
+            <p>{{ improvisadorIzq.pueblo }}</p>
+          </div>
+          <div class="flex justify-between mt-4">
+            <p>EDAD:</p>
+            <p>{{ improvisadorIzq.edad }}</p>
+          </div>
+          <div class="flex justify-between mt-4">
+            <p>DEBUT:</p>
+            <p>{{ improvisadorIzq.debut }}</p>
+          </div>
+          <div class="flex justify-between mt-4">
+            <p>PROMEDIO:</p>
+            <p>{{ improvisadorIzq.promedio }} /3</p>
+          </div>
+        </div>
+        <div class="Anton">
+          <!-- <Radar :data="data" :options="options" /> -->
+          <VueUiRadar :config="config" :dataset="dataset"/>
+
+        </div>
+      </div>
+    </div>
+
     <div v-if="estadistica" class="w-full Anton">
       <Radar :data="data" :options="options" />
     </div>
@@ -177,8 +208,8 @@
               <div v-for="improvisador in jugadoresIzq" :key="improvisador.id" class="flex items-center">
                 <p class="mr-2 uppercase "> {{ improvisador.name }} </p>
                 <button @click="playerNameIzq(improvisador)" class="bg-slate-300 rounded p-2 mr-2">IN/OUT</button>
-                <button class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
-                <button class="bg-slate-300 rounded p-2">STATS DER</button>
+                <button @click="statIzq(improvisador)" class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
+                <button @click="statDer(improvisador)" class="bg-slate-300 rounded p-2">STATS DER</button>
               </div>
             </div>
             <div class="flexjustify-between flex-col w-1/2">
@@ -186,8 +217,8 @@
               <div v-for="improvisador in jugadoresDer" :key="improvisador.id" class="flex items-center">
                 <p class="mr-2 uppercase "> {{ improvisador.name }} </p>
                 <button @click="playerNameDer(improvisador)" class="bg-slate-300 rounded p-2 mr-2">IN/OUT</button>
-                <button class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
-                <button class="bg-slate-300 rounded p-2">STATS DER</button>
+                <button @click="statIzq(improvisador)" class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
+                <button @click="statDer(improvisador)" class="bg-slate-300 rounded p-2">STATS DER</button>
               </div>
             </div>
           </div>
@@ -215,6 +246,8 @@ import {
 import { Radar } from 'vue-chartjs'
 ChartJS.register(RadialLinearScale,PointElement,LineElement,Filler,Tooltip,Legend)
 
+import {VueUiRadar} from "vue-data-ui"
+
 
 export default{
   components:{
@@ -223,10 +256,12 @@ export default{
     NInput,
     NTabs,
     NTabPane,
-    Radar
+    Radar,
+    VueUiRadar
   },
   setup(){
-    const improvisador = ref({})
+    const improvisadorIzq = ref({})
+    const improvisadorDer = ref({})
     const tipo = ref()
     const titulo = ref()
     const jugadores = ref()
@@ -291,19 +326,18 @@ export default{
       ],
       datasets: [
         {
-          label: 'Joel',
           fill: true,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgb(255, 99, 132)',
-          pointBackgroundColor: 'rgb(255, 99, 132)',
+          backgroundColor: 'rgba(238, 112, 4, 0.5)',
+          borderColor: 'rgb(238, 112, 4)',
+          pointBackgroundColor: 'rgb(238, 112, 4)',
           pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgb(255, 99, 132)',
-          data: [85, 85, 82, 78, 84]
+          pointHoverBorderColor: 'rgb(238, 112, 4)',
+          data: [85, 85, 80, 75, 85]
         }
       ]
     }
-    const options = {
+    const options = ref({
       responsive: true,
       maintainAspectRatio: false,
       scales: {
@@ -315,7 +349,137 @@ export default{
           suggestedMax: 100
         }
       }
+    })
+    const config = ref({
+    "style":{
+       "fontFamily":"inherit",
+       "chart":{
+          "backgroundColor":"#00000000",
+          "color":"#ffffff",
+          "layout":{
+             "useDiv":true,
+             "plots":{
+                "show":true,
+                "radius":2
+             },
+             "outerPolygon":{
+                "stroke":"#CCCCCC",
+                "strokeWidth":1
+             },
+             "dataPolygon":{
+                "strokeWidth":1,
+                "transparent":false,
+                "opacity":20,
+                "useGradient":true
+             },
+             "grid":{
+                "show":true,
+                "stroke":"#e1e5e8",
+                "strokeWidth":0.5,
+                "graduations":5
+             },
+             "labels":{
+                "dataLabels":{
+                   "show":true,
+                   "fontSize":20,
+                   "color":"#ffffff"
+                }
+             }
+          },
+          "title":{
+             "text":"",
+             "color":"#2D353C",
+             "fontSize":20,
+             "bold":true,
+             "subtitle":{
+                "color":"#A1A1A1",
+                "text":"",
+                "fontSize":16,
+                "bold":false
+             }
+          },
+          "tooltip":{
+             "show":true,
+             "backgroundColor":"#FFFFFF",
+             "color":"#2D353C",
+             "fontSize":14,
+             "showValue":true,
+             "showPercentage":true,
+             "roundingValue":0,
+             "roundingPercentage":0
+          },
+          "legend":{
+             "show":false,
+             "bold":true,
+             "backgroundColor":"#FFFFFF",
+             "color":"#2D353C",
+             "fontSize":14,
+             "roundingPercentage":0
+          }
+       }
+    },
+    "table":{
+       "show":false,
+       "th":{
+          "backgroundColor":"#FAFAFA",
+          "color":"#2D353C",
+          "outline":"1px solid #e1e5e8"
+       },
+       "td":{
+          "backgroundColor":"#FFFFFF",
+          "color":"#2D353C",
+          "outline":"1px solid #e1e5e8",
+          "roundingValue":0,
+          "roundingPercentage":0
+       }
+    },
+    "userOptions":{
+       "show":false,
+       "title":"options",
+       "labels":{
+          "useDiv":"Title & legend inside",
+          "showTable":"Show table"
+       }
+    },
+    "translations":{
+       "target":"Target"
     }
+    })
+    const dataset = ref({
+      categories: [{name: "stats", color: "#42d392"}],
+      series:[
+        {
+          name: "TECNICA",
+          values: [95],
+          color: "",
+          target: 100
+        },
+        {
+          name: "DIBUJO",
+          values: [95],
+          color: "",
+          target: 100
+        },
+        {
+          name: "ORIGINALIDAD",
+          values: [95],
+          color: "",
+          target: 100
+        },
+        {
+          name: "COMEDIA",
+          values: [95],
+          color: "",
+          target: 100
+        },
+        {
+          name: "RECURSOS",
+          values: [95],
+          color: "",
+          target: 100
+        },
+      ]
+    })
     return{
       equipoIzq,
       crono,
@@ -340,14 +504,33 @@ export default{
       texto,
       jugadoresIzq,
       jugadoresDer,
-      improvisador,
+      improvisadorIzq,
+      improvisadorDer,
       estadistica,
       data,
       options,
-      equipos
+      equipos,
+      dataset,
+      config
     }
   },
   methods:{
+    statIzq(improvisador){
+      this.improvisadorIzq.name = improvisador.name
+      this.improvisadorIzq.apellidos = improvisador.apellidos
+      this.improvisadorIzq.pueblo = improvisador.pueblo
+      this.improvisadorIzq.debut = improvisador.debut
+      this.improvisadorIzq.edad = improvisador.edad
+      this.improvisadorIzq.promedio = improvisador.promedio
+    },
+    statDer(improvisador){
+      this.improvisadorDer.name = improvisador.name
+      this.improvisadorDer.apellidos = improvisador.apellidos
+      this.improvisadorDer.pueblo = improvisador.pueblo
+      this.improvisadorDer.debut = improvisador.debut
+      this.improvisadorDer.edad = improvisador.edad
+      this.improvisadorDer.promedio = improvisador.promedio
+    },
     async getImprovisadores(){
       await axios.get(`http://lligaimproback.test/api/improvisadores/${this.equipoIzq.id}`)
       .then(response => {
@@ -456,6 +639,25 @@ export default{
 }
 .n-input .n-input-wrapper{
   font-size: xx-large !important;
+}
+
+.statsImprovsessio{
+  background-image: url(../../img/stats/improvsessio.png);
+}
+.statsImpropenosos{
+  background-image: url(../../img/stats/impropenosos.png);
+}
+.statsEmta{
+  background-image: url(../../img/stats/emta.png);
+}
+.statsDreamteam{
+  background-image: url(../../img/stats/dreamteam.png);
+}
+.statsAspaiet{
+  background-image: url(../../img/stats/aspaiet.png);
+}
+.statsGladiadoras{
+  background-image: url(../../img/stats/gladiadoras.png);
 }
 
 .logo{
