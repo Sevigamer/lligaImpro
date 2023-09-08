@@ -100,50 +100,87 @@
         </div>
       </div>
     </transition>
-
-    <div class="w-[538px] h-[697px] absolute top-[175px] left-[118px] flex flex-col statsImprovsessio" >
-      <div class="h-[114px] w-full uppercase flex items-center justify-center">
-        <div class="text-white text-7xl Anton">{{ improvisadorIzq.name + " " + improvisadorIzq.apellidos }}</div>
-      </div>
-      <div class="">
-        <div class="Anton flex flex-col mr-4 ml-4 text-5xl text-white uppercase">
-          <div class="flex justify-between mt-4">
-            <p>ORIGEN:</p>
-            <p>{{ improvisadorIzq.pueblo }}</p>
+    <transition name="statsIzq">
+      <div  v-if="statsIzq" id="estadisticasIzq" class="w-[538px] h-[697px] absolute top-[175px] left-[118px] flex flex-col opacity-0">
+        <div class="h-[114px] w-full uppercase flex items-center justify-center">
+          <div class="text-white text-7xl Anton">{{ improvisadorIzq.name + " " + improvisadorIzq.apellidos }}</div>
+        </div>
+        <div class="">
+          <div class="Anton flex flex-col mr-4 ml-4 text-5xl text-white uppercase">
+            <div class="flex justify-between mt-4">
+              <p>ORIGEN:</p>
+              <p>{{ improvisadorIzq.pueblo }}</p>
+            </div>
+            <div class="flex justify-between mt-4">
+              <p>EDAD:</p>
+              <p>{{ improvisadorIzq.edad }}</p>
+            </div>
+            <div class="flex justify-between mt-4">
+              <p>DEBUT:</p>
+              <p>{{ improvisadorIzq.debut }}</p>
+            </div>
+            <div class="flex justify-between mt-4">
+              <p>PROMEDIO:</p>
+              <p><VueUiRating :config="configStar" :dataset="ratingLeft"/></p>
+            </div>
           </div>
-          <div class="flex justify-between mt-4">
-            <p>EDAD:</p>
-            <p>{{ improvisadorIzq.edad }}</p>
-          </div>
-          <div class="flex justify-between mt-4">
-            <p>DEBUT:</p>
-            <p>{{ improvisadorIzq.debut }}</p>
-          </div>
-          <div class="flex justify-between mt-4">
-            <p>PROMEDIO:</p>
-            <p>{{ improvisadorIzq.promedio }} /3</p>
+          <div class="Anton">
+            <VueUiRadar :config="configRadar" :dataset="datasetIzq"/>
           </div>
         </div>
-        <div class="Anton">
-          <!-- <Radar :data="data" :options="options" /> -->
-          <VueUiRadar :config="config" :dataset="dataset"/>
+      </div>
+    </transition>
 
+    <transition name="tarjeta">
+      <div v-if="clasificacion" class="absolute top-[188px] left-[326px] w-[1268px] h-[694px] flex flex-col clasi text-7xl Antonio text-white opacity-0" id="clasi">
+        <table class="table-auto w-full h-full text-left">
+            <thead class="h-[86px]">
+                <tr>
+                    <td class="py-1  text-center  p-4" contenteditable="true"></td>
+                    <td class="py-1  text-center  p-4" contenteditable="true"></td>
+                    <td class="py-1  text-center  p-4" contenteditable="true"></td>
+                    <td class="py-1  text-center  p-4" contenteditable="true">PP</td>
+                    <td class="py-1  text-center  p-4" contenteditable="true">PE</td>
+                    <td class="py-1  text-center  p-4" contenteditable="true">PG</td>
+                    <td class="py-1  text-center font-bold p-4" contenteditable="true">IG</td>
+                    <td class="py-1  text-center font-bold  p-4" contenteditable="true">F</td>
+                    <td class="py-1  text-center font-bold  p-4" contenteditable="true">I</td>
+                    <td class="py-1  text-center font-extrabold  p-4" contenteditable="true">PT</td>
+                </tr>
+            </thead>
+            <tbody class="">
+                <tr class="py-1" v-for="equipo in clasi">
+                    <td class="py-1  text-center text-black mr-8" contenteditable="true" :class="equipo.posicion < 5 ? 'border-l-8 border-[#be1622]':''"> {{ equipo.posicion }} </td>
+                    <td class="py-1 w-fit flex justify-center ml-4" contenteditable="true"> <img :src="'../../img/clasi/'+equipo.equipo+'.png'"> </td>
+                    <td class="py-1  text-right  p-4 uppercase text-4xl font-thin" contenteditable="true"> {{equipo.equipo}} </td>
+                    <td class="py-1  text-center  p-4" contenteditable="true"> {{equipo.pperdios}}</td>
+                    <td class="py-1  text-center  p-4" contenteditable="true"> {{equipo.pempatados}}</td>
+                    <td class="py-1  text-center  p-4" contenteditable="true"> {{equipo.pganados}}</td>
+                    <td class="py-1  text-center font-bold  p-4" contenteditable="true"> {{equipo.iganadas}}</td>
+                    <td class="py-1  text-center font-bold p-4" contenteditable="true"> {{equipo.faltas}}</td>
+                    <td class="py-1  text-center font-bold p-4" contenteditable="true"> {{equipo.insignias}}</td>
+                    <td class="py-1  text-center font-bold p-4" contenteditable="true"> {{equipo.puntos}}</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </transition>
+
+    <div class="flex">
+      <div v-for="player in alineacionIzq" class="relative inline-block">
+        <img :src="'../../img/alineacion/'+equipoIzq.data.fondo+'/'+player.name+'.png'">
+        <div class=" absolute bottom-0 flex flex-col uppercase">
+          <div> {{ player.name }} </div>
+          <div> {{ player.apellidos }} </div>
         </div>
       </div>
     </div>
-
-    <div v-if="estadistica" class="w-full Anton">
-      <Radar :data="data" :options="options" />
-    </div>
-    
   </div>
   <!-- Botones Marcador -->
   <div class="bg-white w-[1000px]">
     <n-tabs type="line" animated>
       <n-tab-pane name="Marcador" tab="Marcador">
         <button @click="inOutMarcador" class="botones">Marcador IN/OUT</button>
-        <button @click="estadistica = !estadistica"  class="botones">Stats</button>
-        <button @click="ecambio"  class="botones">Stats Cambio</button>
         <div class="flex flex-col mt-2">
           <div class="flex">
             <button @click="sumarPuntos(true)" class="botones">Sumar Punto Izq</button>
@@ -197,32 +234,42 @@
           </div>
           <div v-if="jugadoresIzq.length == 0" class="flex">
             <p class="text-3xl">Equipo IZQ</p>
-            <n-select v-model:value="equipoIzq.id" size="large" :options="equipos"/>
+            <n-select v-model:value="equipoIzq.data" size="large" :options="equipos"/>
             <p class="text-3xl">Equipo DER</p>
-            <n-select v-model:value="equipoDer.id" size="large" :options="equipos"/>
+            <n-select v-model:value="equipoDer.data" size="large" :options="equipos"/>
             <button @click="getImprovisadores" class="botones">Guardar</button>
           </div>
-          <div v-else class="flex  w-full">
-            <div class="flex justify-between flex-col w-1/2">
-              <p class="text-3xl">Jugadores Izquierda</p>
-              <div v-for="improvisador in jugadoresIzq" :key="improvisador.id" class="flex items-center">
-                <p class="mr-2 uppercase "> {{ improvisador.name }} </p>
-                <button @click="playerNameIzq(improvisador)" class="bg-slate-300 rounded p-2 mr-2">IN/OUT</button>
-                <button @click="statIzq(improvisador)" class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
-                <button @click="statDer(improvisador)" class="bg-slate-300 rounded p-2">STATS DER</button>
+          <div v-else class="flex-col flex  w-full">
+            <div class="flex">
+              <div class="flex justify-between flex-col w-1/2">
+                <p class="text-3xl">Jugadores Izquierda</p>
+                <div v-for="improvisador in jugadoresIzq" :key="improvisador.id" class="flex items-center">
+                  <p class="mr-2 uppercase "> {{ improvisador.name }} </p>
+                  <button @click="playerNameIzq(improvisador)" class="bg-slate-300 rounded p-2 mr-2">IN/OUT</button>
+                  <button @click="statIzq(improvisador, true)" class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
+                  <button @click="statDer(improvisador, true)" class="bg-slate-300 rounded p-2">STATS DER</button>
+                </div>
+              </div>
+              <div class="flexjustify-between flex-col w-1/2">
+                <p class="text-3xl">Jugadores Derecha</p>
+                <div v-for="improvisador in jugadoresDer" :key="improvisador.id" class="flex items-center">
+                  <p class="mr-2 uppercase "> {{ improvisador.name }} </p>
+                  <button @click="playerNameDer(improvisador)" class="bg-slate-300 rounded p-2 mr-2">IN/OUT</button>
+                  <button @click="statIzq(improvisador, false)" class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
+                  <button @click="statDer(improvisador, false)" class="bg-slate-300 rounded p-2">STATS DER</button>
+                </div>
               </div>
             </div>
-            <div class="flexjustify-between flex-col w-1/2">
-              <p class="text-3xl">Jugadores Derecha</p>
-              <div v-for="improvisador in jugadoresDer" :key="improvisador.id" class="flex items-center">
-                <p class="mr-2 uppercase "> {{ improvisador.name }} </p>
-                <button @click="playerNameDer(improvisador)" class="bg-slate-300 rounded p-2 mr-2">IN/OUT</button>
-                <button @click="statIzq(improvisador)" class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
-                <button @click="statDer(improvisador)" class="bg-slate-300 rounded p-2">STATS DER</button>
-              </div>
+            <div class="flex">
+              <n-select class="w-40" v-model:value="alineacionIzq" multiple size="large" :options="jIzq"/>
+              <button @click="showAlineacionIzq" class="botones">Alineacion</button>
             </div>
+
           </div>
         </div>
+      </n-tab-pane>
+      <n-tab-pane name="Clasificacion" tab="Clasi">
+        <button @click="getClasi" class="botones"> Clasificacion IN/OUT</button>
       </n-tab-pane>
     </n-tabs>
   </div>
@@ -234,19 +281,7 @@ import axios from 'axios'
 import { ref } from 'vue';
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import {NSelect, NInput, NTabs, NTabPane} from 'naive-ui';
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend
-} from 'chart.js'
-import { Radar } from 'vue-chartjs'
-ChartJS.register(RadialLinearScale,PointElement,LineElement,Filler,Tooltip,Legend)
-
-import {VueUiRadar} from "vue-data-ui"
+import {VueUiRadar, VueUiRating} from "vue-data-ui"
 
 
 export default{
@@ -256,8 +291,8 @@ export default{
     NInput,
     NTabs,
     NTabPane,
-    Radar,
-    VueUiRadar
+    VueUiRadar,
+    VueUiRating
   },
   setup(){
     const improvisadorIzq = ref({})
@@ -276,7 +311,8 @@ export default{
     const nJugadorIzq = ref(false) 
     const nJugadorDer = ref(false) 
     const nPresentador = ref(false) 
-    const estadistica = ref(false)
+    const statsIzq = ref(false)
+    const imageIzq = ref("")
     const equipoIzq = ref({puntos: 0, faltas: 0})
     const equipoDer = ref({puntos: 0, faltas: 0})
     const tipos = ref([
@@ -309,48 +345,14 @@ export default{
     const jugadoresIzq = ref([])
     const jugadoresDer = ref([])
     const equipos = ref([
-      {label:"Dreamteam", value: 1},
-      {label:"Emta", value: 2},
-      {label:"Improvsessio", value: 3},
-      {label:"Gladiadoras", value: 4},
-      {label:"Aspaiet", value: 5},
-      {label:"Impropenosos", value: 6},
+      {label:"Dreamteam", value: {id: 1, color: '#bd1722', fondo: 'dreamteam'}},
+      {label:"Emta", value: {id:2, color:'#02ad3a',  fondo:'emta'}},
+      {label:"Improvsessio", value: {id:3, color:'#ee7004',  fondo:'improvsessio'}},
+      {label:"Gladiadoras", value: {id:4, color:'#ff33b9',  fondo:'gladiadoras'}},
+      {label:"Aspaiet", value: {id:5, color:'#fad517',  fondo:'aspaiet'}},
+      {label:"Impropenosos", value: {id:6, color:'#1c70b7',  fondo:'impropenosos'}},
     ])
-    const data = {
-      labels: [
-        'TÉCNICA',
-        'DIBUJO',
-        'ORIGINALIDAD',
-        'COMEDIA',
-        'RECURSOS'
-      ],
-      datasets: [
-        {
-          fill: true,
-          backgroundColor: 'rgba(238, 112, 4, 0.5)',
-          borderColor: 'rgb(238, 112, 4)',
-          pointBackgroundColor: 'rgb(238, 112, 4)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgb(238, 112, 4)',
-          data: [85, 85, 80, 75, 85]
-        }
-      ]
-    }
-    const options = ref({
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        r: {
-          angleLines: {
-              display: false
-          },
-          suggestedMin: 50,
-          suggestedMax: 100
-        }
-      }
-    })
-    const config = ref({
+    const configRadar = ref({
     "style":{
        "fontFamily":"inherit",
        "chart":{
@@ -445,7 +447,7 @@ export default{
        "target":"Target"
     }
     })
-    const dataset = ref({
+    const datasetIzq = ref({
       categories: [{name: "stats", color: "#42d392"}],
       series:[
         {
@@ -480,6 +482,73 @@ export default{
         },
       ]
     })
+    const configStar = ref(
+      {
+        "type":"star",
+        "readonly":false,
+        "from":1,
+        "to":3,
+        "style":{
+            "fontFamily":"inherit",
+            "animated":true,
+            "itemSize":48,
+            "backgroundColor":"#00000000",
+            "star":{
+              "activeColor":"#FFD055",
+              "borderColor":"#FFD055",
+              "borderWidth":3,
+              "apexes":5,
+              "inactiveColor":"#e1e5e8",
+              "useGradient":true
+            },
+            "image":{
+              "src":"",
+              "inactiveOpacity":0.3,
+              "alt":"rating image"
+            },
+            "title":{
+              "textAlign":"center",
+              "fontSize":20,
+              "color":"#2D353C",
+              "bold":true,
+              "text":"",
+              "offsetY":6,
+              "subtitle":{
+                  "fontSize":14,
+                  "color":"#CCCCCC",
+                  "bold":false,
+                  "text":"",
+                  "offsetY":12
+              }
+            },
+            "rating":{
+              "show":true,
+              "fontSize":48,
+              "bold":true,
+              "roundingValue":1,
+              "position":"right",
+              "offsetY":0,
+              "offsetX":4
+            },
+            "tooltip":{
+              "show":true,
+              "fontSize":14,
+              "offsetY":0,
+              "color":"#2D353C",
+              "bold":true,
+              "backgroundColor":"#FFFFFF",
+              "borderColor":"#e1e5e8",
+              "borderRadius":4,
+              "boxShadow":"0 6px 12px -6px rgba(0,0,0,0.2)"
+            }
+        }
+      }
+    )
+    const ratingLeft = ref({rating: 0.0})
+    const clasi = ref([])
+    const clasificacion = ref(false)
+    const jIzq = ref([])
+    const alineacionIzq = ref([])  
     return{
       equipoIzq,
       crono,
@@ -506,24 +575,62 @@ export default{
       jugadoresDer,
       improvisadorIzq,
       improvisadorDer,
-      estadistica,
-      data,
-      options,
+      statsIzq,
       equipos,
-      dataset,
-      config
+      datasetIzq,
+      configRadar,
+      configStar,
+      ratingLeft, 
+      imageIzq,
+      clasi,
+      clasificacion,
+      alineacionIzq,
+      jIzq
     }
   },
   methods:{
-    statIzq(improvisador){
+    showAlineacionIzq(){
+      debugger
+    },
+    async getClasi(){
+      await axios.get('http://lligaimproback.test/api/clasi')
+      .then(response => {
+        this.clasi = response.data
+      })
+      setTimeout(function(){ 
+        document.getElementById("clasi").style.opacity = 100
+       }, 200);
+      this.clasificacion = !this.clasificacion
+    },
+    async statIzq(improvisador,pos){
+      let url = ""
+      if(pos){
+        this.datasetIzq.categories[0].color = this.equipoIzq.data.color
+        url =  this.equipoIzq.data.fondo
+      }else{
+        this.datasetIzq.categories[0].color = this.equipoDer.data.color
+        url = this.equipoDer.data.fondo
+      }
       this.improvisadorIzq.name = improvisador.name
       this.improvisadorIzq.apellidos = improvisador.apellidos
       this.improvisadorIzq.pueblo = improvisador.pueblo
       this.improvisadorIzq.debut = improvisador.debut
       this.improvisadorIzq.edad = improvisador.edad
-      this.improvisadorIzq.promedio = improvisador.promedio
+      let number =  parseFloat(improvisador.promedio)
+      this.ratingLeft.rating = number
+      await axios.get(`http://lligaimproback.test/api/stats/${improvisador.id}`)
+      .then(response => {
+        for(let i = 0; i< response.data.length; i++){
+          this.datasetIzq.series[i].values[0] = response.data[i];
+        }
+      })
+      setTimeout(function(){ 
+        document.getElementById("estadisticasIzq").style.opacity = 100
+        document.getElementById("estadisticasIzq").style.backgroundImage = `url('../../img/stats/${url}.png')`;
+       }, 200);
+      this.statsIzq = !this.statsIzq
     },
-    statDer(improvisador){
+    statDer(improvisador, pos){
       this.improvisadorDer.name = improvisador.name
       this.improvisadorDer.apellidos = improvisador.apellidos
       this.improvisadorDer.pueblo = improvisador.pueblo
@@ -532,11 +639,14 @@ export default{
       this.improvisadorDer.promedio = improvisador.promedio
     },
     async getImprovisadores(){
-      await axios.get(`http://lligaimproback.test/api/improvisadores/${this.equipoIzq.id}`)
+      await axios.get(`http://lligaimproback.test/api/improvisadores/${this.equipoIzq.data.id}`)
       .then(response => {
         this.jugadoresIzq = response.data
+        for(let i = 0; i< response.data.length; i++){
+          this.jIzq.push({label: response.data[i].name, value: response.data[i]})
+        }
       })
-      await axios.get(`http://lligaimproback.test/api/improvisadores/${this.equipoDer.id}`)
+      await axios.get(`http://lligaimproback.test/api/improvisadores/${this.equipoDer.data.id}`)
       .then(response => {
         this.jugadoresDer = response.data
       })
@@ -560,7 +670,7 @@ export default{
         document.getElementById("crono").style.opacity = 100
        }, 200);
        this.crono = !this.crono;
-      //  this.texto = !this.texto;
+       this.texto = !this.texto;
     },
     inOutMarcador(){
       setTimeout(function(){ 
@@ -641,23 +751,8 @@ export default{
   font-size: xx-large !important;
 }
 
-.statsImprovsessio{
-  background-image: url(../../img/stats/improvsessio.png);
-}
-.statsImpropenosos{
-  background-image: url(../../img/stats/impropenosos.png);
-}
-.statsEmta{
-  background-image: url(../../img/stats/emta.png);
-}
-.statsDreamteam{
-  background-image: url(../../img/stats/dreamteam.png);
-}
-.statsAspaiet{
-  background-image: url(../../img/stats/aspaiet.png);
-}
-.statsGladiadoras{
-  background-image: url(../../img/stats/gladiadoras.png);
+.clasi{
+  background-image: url(../../img/clasi/fondo.png);
 }
 
 .logo{
@@ -672,7 +767,7 @@ export default{
 }
 
 .target{
-  background-image: url(../img/tarjeta.png);
+  background-image: url(../../img/tarjeta.png);
 }
 
 .altura{
@@ -763,6 +858,12 @@ export default{
 }
 .nombreIzq-leave-to {
 	animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
+}
+.statsIzq-enter-to {
+	animation: slide-in-left 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+.statsIzq-leave-to {
+	animation: slide-in-left 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
 }
 
 @keyframes slide-in-left {
