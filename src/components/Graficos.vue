@@ -19,13 +19,18 @@
                 <!-- <div class="text-3xl text-red-500 mr-4">RJO</div> -->
               </div>
             </div>
-            <div class="w-[75px] h-[50px] azul absolute top-[42px]" id="equipoIzquierda"></div>
+            <div class="w-[75px] h-[50px]  absolute top-[42px]" id="equipoIzquierda">
+              <img :src="'../../img/izq/'+equipoIzq.data.fondo+'_marcador.png'">
+            </div>
             <div class="bg-white text-xl text-center w-[80px] h-[30px] absolute top-[82px] left-[127px]" id="crono">
               <vue-countdown :time="duracion*60*1000" v-slot="{minutes, seconds}">
                 {{ String(minutes).padStart(2,'0') }}:{{ String(seconds).padStart(2,'0') }}
               </vue-countdown>
             </div>
-            <div class="w-[75px] h-[50px] rojo absolute top-[42px] left-[260px]" id="equipoDerecha"></div>
+            <div class="w-[75px] h-[50px] absolute top-[42px] left-[260px]" id="equipoDerecha">
+              <img :src="'../../img/derecha/'+equipoDer.data.fondo+'_marcador.png'">
+
+            </div>
             
           </div>
         </div>
@@ -76,27 +81,53 @@
     </transition>
 
     <transition name="nombreIzq">
-      <div v-if="nJugadorIzq" class="opacity-0" id="nIzq">
-        <div class="w-[245px] h-[90px] absolute top-[875px] left-[115px] bg-white">
-          <div class="grid h-full Anton capitalize justify-items-end px-4 py-2">
-            <div class="text-3xl"> {{ improvisador.nombre }} </div>
-            <div class="text-2xl text-blue-600"> {{ improvisador.apellidos }} </div>
+      <div v-if="nJugadorIzq" class="opacity-0  w-[245px] h-[90px] absolute top-[875px] left-[115px]" id="nIzq">
+        <div class="relative inline-block">
+          <img :src="'../../img/izq/'+equipoIzq.data.fondo+'_nombre.png'">
+          <div class="absolute bottom-0 ml-2 uppercase Antonio w-[245px] h-[90px] flex flex-col">
+            <div class="text-3xl font-extrabold text-white h-fit mt-4"> {{ improvisadorIzq.name }} </div>
+            <div class="text-xl text-white h-fit"> {{ improvisadorIzq.apellidos }} </div>
           </div>
-        </div>
-        <div class="bg-blue-600 w-[162px] h-[90px] absolute top-[895px] left-[33px]">
         </div>
       </div>
     </transition>
 
     <transition name="nombreDer">
-      <div v-if="nJugadorDer" class="opacity-0" id="nDer">
-        <div class="w-[245px] h-[90px] absolute top-[875px] left-[1560px] bg-white">
-          <div class="flex flex-col h-full Anton capitalize  px-4 py-2">
-            <div class="text-3xl"> {{ improvisador.nombre }} </div>
-            <div class="text-2xl text-red-600"> {{ improvisador.apellidos }} </div>
+      <div v-if="nJugadorDer" class="opacity-0 w-[245px] h-[90px] absolute top-[875px] left-[1560px]" id="nDer">
+        <div class="relative inline-block">
+          <img :src="'../../img/derecha/'+equipoDer.data.fondo+'_nombre.png'">
+          <div class="absolute bottom-0 uppercase Antonio w-[245px] h-[90px] flex justify-end">
+            <div class="flex flex-col mr-2">
+              <div class="text-3xl font-extrabold text-white w-fit h-fit mt-4 "> {{ improvisadorDer.name }} </div>
+              <div class="text-xl text-white h-fit flex justify-end"> {{ improvisadorDer.apellidos }} </div>
+            </div>
           </div>
         </div>
-        <div class="bg-red-600 w-[162px] h-[90px] absolute top-[895px] left-[1724px]">
+      </div>
+    </transition>
+
+    <transition name="nombreIzq">
+      <div v-if="perIzq" class="opacity-0  w-[245px] h-[90px] absolute top-[875px] left-[115px]" id="pIzq">
+        <div class="relative inline-block">
+          <img :src="'../../img/izq/lliga.png'">
+          <div class="absolute bottom-0 ml-2 uppercase Antonio w-[245px] h-[90px] flex flex-col">
+            <div class="text-3xl font-extrabold text-white h-fit mt-4"> {{ personaIzq.name }} </div>
+            <div class="text-xl text-white h-fit"> {{ personaIzq.apellidos }} </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <transition name="nombreDer">
+      <div v-if="perDer" class="opacity-0 w-[245px] h-[90px] absolute top-[875px] left-[1560px]" id="pDer">
+        <div class="relative inline-block">
+          <img :src="'../../img/derecha/lliga.png'">
+          <div class="absolute bottom-0 uppercase Antonio w-[245px] h-[90px] flex justify-end">
+            <div class="flex flex-col mr-2">
+              <div class="text-3xl font-extrabold text-white w-fit h-fit mt-4 "> {{ personaDer.name }} </div>
+              <div class="text-xl text-white h-fit flex justify-end"> {{ personaDer.apellidos }} </div>
+            </div>
+          </div>
         </div>
       </div>
     </transition>
@@ -126,6 +157,36 @@
           </div>
           <div class="Anton">
             <VueUiRadar :config="configRadar" :dataset="datasetIzq"/>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <transition name="statsDer">
+      <div  v-if="statsDer" id="estadisticasDer" class="w-[538px] h-[697px] absolute top-[175px] left-[1265px] flex flex-col opacity-0">
+        <div class="h-[114px] w-full uppercase flex items-center justify-center">
+          <div class="text-white text-7xl Anton">{{ improvisadorDer.name + " " + improvisadorDer.apellidos }}</div>
+        </div>
+        <div class="">
+          <div class="Anton flex flex-col mr-4 ml-4 text-5xl text-white uppercase">
+            <div class="flex justify-between mt-4">
+              <p>ORIGEN:</p>
+              <p>{{ improvisadorDer.pueblo }}</p>
+            </div>
+            <div class="flex justify-between mt-4">
+              <p>EDAD:</p>
+              <p>{{ improvisadorDer.edad }}</p>
+            </div>
+            <div class="flex justify-between mt-4">
+              <p>DEBUT:</p>
+              <p>{{ improvisadorDer.debut }}</p>
+            </div>
+            <div class="flex justify-between mt-4">
+              <p>PROMEDIO:</p>
+              <p><VueUiRating :config="configStar" :dataset="ratingRight"/></p>
+            </div>
+          </div>
+          <div class="Anton">
+            <VueUiRadar :config="configRadar" :dataset="datasetDer"/>
           </div>
         </div>
       </div>
@@ -228,9 +289,17 @@
       <n-tab-pane name="Jugadores" tab="Jugadores">
         <div class="flex flex-col w-full">
           <div class="flex">
-            <n-input v-model:value="nombre"  type="text" placeholder="Nombre"/>
-            <n-input v-model:value="apellidos" type="text" placeholder="Apellidos"/>
-            <button @click="nPresentador = !nPresentador" class="bg-slate-300 rounded p-2">IN/OUT</button>
+            <n-input v-model:value="personaIzq.name"  type="text" placeholder="Nombre"/>
+            <n-input v-model:value="personaIzq.apellidos" type="text" placeholder="Apellidos"/>
+            <button @click="showPerIzq" class="bg-slate-300 rounded p-2">IN/OUT IZQ</button>
+          </div>
+          <div class="flex">
+            <n-input v-model:value="personaDer.name"  type="text" placeholder="Nombre"/>
+            <n-input v-model:value="personaDer.apellidos" type="text" placeholder="Apellidos"/>
+            <button @click="showPerDer" class="bg-slate-300 rounded p-2">IN/OUT DER</button>
+          </div>
+          <div >
+            <button @click="showPersonas" class="bg-slate-300 rounded p-2">IN/OUT Ambos</button>
           </div>
           <div v-if="jugadoresIzq.length == 0" class="flex">
             <p class="text-3xl">Equipo IZQ</p>
@@ -297,6 +366,8 @@ export default{
   setup(){
     const improvisadorIzq = ref({})
     const improvisadorDer = ref({})
+    const personaIzq = ref({})
+    const personaDer = ref({})
     const tipo = ref()
     const titulo = ref()
     const jugadores = ref()
@@ -310,8 +381,10 @@ export default{
     const texto = ref(false) 
     const nJugadorIzq = ref(false) 
     const nJugadorDer = ref(false) 
-    const nPresentador = ref(false) 
+    const perIzq = ref(false) 
+    const perDer = ref(false) 
     const statsIzq = ref(false)
+    const statsDer = ref(false)
     const imageIzq = ref("")
     const equipoIzq = ref({puntos: 0, faltas: 0})
     const equipoDer = ref({puntos: 0, faltas: 0})
@@ -482,6 +555,41 @@ export default{
         },
       ]
     })
+    const datasetDer = ref({
+      categories: [{name: "stats", color: "#42d392"}],
+      series:[
+        {
+          name: "TECNICA",
+          values: [95],
+          color: "",
+          target: 100
+        },
+        {
+          name: "DIBUJO",
+          values: [95],
+          color: "",
+          target: 100
+        },
+        {
+          name: "ORIGINALIDAD",
+          values: [95],
+          color: "",
+          target: 100
+        },
+        {
+          name: "COMEDIA",
+          values: [95],
+          color: "",
+          target: 100
+        },
+        {
+          name: "RECURSOS",
+          values: [95],
+          color: "",
+          target: 100
+        },
+      ]
+    })
     const configStar = ref(
       {
         "type":"star",
@@ -545,6 +653,7 @@ export default{
       }
     )
     const ratingLeft = ref({rating: 0.0})
+    const ratingRight = ref({rating: 0.0})
     const clasi = ref([])
     const clasificacion = ref(false)
     const jIzq = ref([])
@@ -558,7 +667,6 @@ export default{
       tipos,
       nJugadorIzq,
       nJugadorDer,
-      nPresentador,
       nombre,
       apellidos,
       numJug,
@@ -571,24 +679,45 @@ export default{
       categoria,
       imageUrl,
       texto,
-      jugadoresIzq,
-      jugadoresDer,
-      improvisadorIzq,
-      improvisadorDer,
-      statsIzq,
+      jugadoresIzq,jugadoresDer,
+      improvisadorIzq,improvisadorDer,
+      statsIzq, statsDer,
       equipos,
-      datasetIzq,
+      datasetIzq, datasetDer,
       configRadar,
       configStar,
-      ratingLeft, 
+      ratingLeft, ratingRight,
       imageIzq,
       clasi,
       clasificacion,
       alineacionIzq,
-      jIzq
+      jIzq, 
+      personaIzq,personaDer, perIzq, perDer
     }
   },
   methods:{
+    showPerDer(){
+      setTimeout(function(){ 
+        document.getElementById("pDer").style.opacity = 100
+       }, 200);
+      this.perDer = !this.perDer 
+    },
+    showPerIzq(){
+      setTimeout(function(){ 
+        document.getElementById("pIzq").style.opacity = 100
+       }, 200);
+      this.perIzq = !this.perIzq
+    },
+    showPersonas(){
+      setTimeout(function(){ 
+      document.getElementById("pIzq").style.opacity = 100
+      }, 200);
+      setTimeout(function(){ 
+      document.getElementById("pDer").style.opacity = 100
+      }, 200);
+      this.perDer = !this.perDer 
+      this.perIzq = !this.perIzq
+    },
     showAlineacionIzq(){
       debugger
     },
@@ -630,13 +759,34 @@ export default{
        }, 200);
       this.statsIzq = !this.statsIzq
     },
-    statDer(improvisador, pos){
+    async statDer(improvisador, pos){
+      let url = ""
+      if(pos){
+        this.datasetDer.categories[0].color = this.equipoIzq.data.color
+        url =  this.equipoIzq.data.fondo
+      }else{
+        this.datasetDer.categories[0].color = this.equipoDer.data.color
+        url = this.equipoDer.data.fondo
+      }
       this.improvisadorDer.name = improvisador.name
       this.improvisadorDer.apellidos = improvisador.apellidos
       this.improvisadorDer.pueblo = improvisador.pueblo
       this.improvisadorDer.debut = improvisador.debut
       this.improvisadorDer.edad = improvisador.edad
       this.improvisadorDer.promedio = improvisador.promedio
+      let number =  parseFloat(improvisador.promedio)
+      this.ratingRight.rating = number
+      await axios.get(`http://lligaimproback.test/api/stats/${improvisador.id}`)
+      .then(response => {
+        for(let i = 0; i< response.data.length; i++){
+          this.datasetDer.series[i].values[0] = response.data[i];
+        }
+      })
+      setTimeout(function(){ 
+        document.getElementById("estadisticasDer").style.opacity = 100
+        document.getElementById("estadisticasDer").style.backgroundImage = `url('../../img/stats/${url}.png')`;
+       }, 200);
+      this.statsDer = !this.statsDer
     },
     async getImprovisadores(){
       await axios.get(`http://lligaimproback.test/api/improvisadores/${this.equipoIzq.data.id}`)
@@ -655,14 +805,14 @@ export default{
       setTimeout(function(){ 
         document.getElementById("nIzq").style.opacity = 100
        }, 200);
-      this.improvisador = this.jugadoresIzq[pos];
+      this.improvisadorIzq = pos;
       this.nJugadorIzq = !this.nJugadorIzq
     },
     playerNameDer(pos){
       setTimeout(function(){ 
         document.getElementById("nDer").style.opacity = 100
        }, 200);
-      this.improvisador = this.jugadoresDer[pos];
+      this.improvisadorDer = pos;
       this.nJugadorDer = !this.nJugadorDer
     },
     inOutTarjeta(){
@@ -880,6 +1030,12 @@ export default{
 }
 .nombreDer-leave-to {
 	animation: slide-in-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
+}
+.statsDer-enter-to {
+	animation: slide-in-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+.statsDer-leave-to {
+	animation: slide-in-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
 }
 
 @keyframes slide-in-right {
