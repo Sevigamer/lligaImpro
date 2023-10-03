@@ -1036,13 +1036,13 @@ export default{
 }
 
 .alineacion-enter-to {
-	animation: slide-in-top 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	animation: slide-in-bot 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 .alineacion-leave-to {
-	animation: slide-in-top 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
+	animation: slide-in-bot 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
 }
 
-@keyframes slide-in-top {
+@keyframes slide-in-bot {
   0% {
     transform: translateY(1000px);
   }
