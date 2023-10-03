@@ -227,15 +227,29 @@
       </div>
     </transition>
 
-    <div class="flex">
-      <div v-for="player in alineacionIzq" class="relative inline-block">
-        <img :src="'../../img/alineacion/'+equipoIzq.data.fondo+'/'+player.name+'.png'">
-        <div class=" absolute bottom-0 flex flex-col uppercase">
-          <div> {{ player.name }} </div>
-          <div> {{ player.apellidos }} </div>
+    <transition name="alineacion">
+      <div v-if="alIzq" class="flex absolute top-[666px] justify-center opacity-0" :class="alineacionIzq.length>5 ? 'left-[390px]':'left-[485px]'" id="clasiIzq">
+        <div v-for="player in alineacionIzq" class="relative inline-block">
+          <img :src="'../../img/alineacion/'+equipoIzq.data.fondo+'/'+player.name+'.png'">
+          <div class="absolute bottom-6 left-3 flex flex-col uppercase w-[166px] h-[76px] justify-center text-white Anton">
+            <div class="text-center w-full text-3xl"> {{ player.name }} </div>
+            <div class="text-center w-full text-2xl"> {{ player.apellidos }} </div>
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
+
+    <transition name="alineacion">
+      <div v-if="alDer" class="flex absolute top-[666px] justify-center opacity-0" :class="alineacionDer.length>5 ? 'left-[390px]':'left-[485px]'" id="clasiDer">
+        <div v-for="player in alineacionDer" class="relative inline-block">
+          <img :src="'../../img/alineacion/'+equipoDer.data.fondo+'/'+player.name+'.png'">
+          <div class="absolute bottom-6 left-3 flex flex-col uppercase w-[166px] h-[76px] justify-center text-white Anton">
+            <div class="text-center w-full text-3xl"> {{ player.name }} </div>
+            <div class="text-center w-full text-2xl"> {{ player.apellidos }} </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
   <!-- Botones Marcador -->
   <div class="bg-white w-[1000px]">
@@ -329,9 +343,11 @@
                 </div>
               </div>
             </div>
-            <div class="flex">
+            <div class="flex mt-4">
               <n-select class="w-40" v-model:value="alineacionIzq" multiple size="large" :options="jIzq"/>
               <button @click="showAlineacionIzq" class="botones">Alineacion</button>
+              <n-select class="w-40" v-model:value="alineacionDer" multiple size="large" :options="jDer"/>
+              <button @click="showAlineacionDer" class="botones">Alineacion</button>
             </div>
 
           </div>
@@ -385,6 +401,8 @@ export default{
     const perDer = ref(false) 
     const statsIzq = ref(false)
     const statsDer = ref(false)
+    const alIzq = ref(false)
+    const alDer = ref(false)
     const imageIzq = ref("")
     const equipoIzq = ref({puntos: 0, faltas: 0})
     const equipoDer = ref({puntos: 0, faltas: 0})
@@ -657,7 +675,9 @@ export default{
     const clasi = ref([])
     const clasificacion = ref(false)
     const jIzq = ref([])
+    const jDer = ref([])
     const alineacionIzq = ref([])  
+    const alineacionDer = ref([])  
     return{
       equipoIzq,
       crono,
@@ -690,8 +710,8 @@ export default{
       imageIzq,
       clasi,
       clasificacion,
-      alineacionIzq,
-      jIzq, 
+      alineacionIzq,alineacionDer, alDer, alIzq,
+      jIzq, jDer,
       personaIzq,personaDer, perIzq, perDer
     }
   },
@@ -719,7 +739,16 @@ export default{
       this.perIzq = !this.perIzq
     },
     showAlineacionIzq(){
-      debugger
+      setTimeout(function(){ 
+        document.getElementById("clasiIzq").style.opacity = 100
+       }, 200);
+      this.alIzq = !this.alIzq
+    },
+    showAlineacionDer(){
+      setTimeout(function(){ 
+        document.getElementById("clasiDer").style.opacity = 100
+       }, 200);
+      this.alDer = !this.alDer
     },
     async getClasi(){
       await axios.get('http://lligaimproback.test/api/clasi')
@@ -799,6 +828,9 @@ export default{
       await axios.get(`http://lligaimproback.test/api/improvisadores/${this.equipoDer.data.id}`)
       .then(response => {
         this.jugadoresDer = response.data
+        for(let i = 0; i< response.data.length; i++){
+          this.jDer.push({label: response.data[i].name, value: response.data[i]})
+        }
       })
     },
     playerNameIzq(pos){
@@ -997,6 +1029,22 @@ export default{
 @keyframes slide-in-top {
   0% {
     transform: translateY(-1000px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.alineacion-enter-to {
+	animation: slide-in-top 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+.alineacion-leave-to {
+	animation: slide-in-top 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both reverse;
+}
+
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(1000px);
   }
   100% {
     transform: translateY(0);
