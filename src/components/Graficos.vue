@@ -46,7 +46,7 @@
       </div>     
     </transition>
     <transition name="tarjeta">
-      <div v-if="texto" class="w-[1066px] h-[190px] absolute top-[784px] left-[427px] Anton target" id="texto">
+      <div v-if="texto" class="w-[1066px] h-[190px] absolute top-[784px] left-[427px] Anton target opacity-0" id="texto">
         <div class="flex flex-col w-[892px] h-full relative left-[174px] uppercase text-white">
           <div class="flex h-[65px] w-full text-4xl items-center">
             <div class="flex w-[200px] items-center">
@@ -250,6 +250,52 @@
         </div>
       </div>
     </transition>
+    <transition name="alineacion">
+        <div v-if="statsEquipo" class="flex absolute left-[118px] top-[815px] w-[683px] h-[172px] opacity-0" id="stats">
+          <div class="relative inline-block">
+            <img :src="'../../img/izq/'+equipoIzq.data.fondo+'_stats.png'">
+            <div class="absolute bottom-0 left-[88px] h-[172px] w-[595px] px-4 py-2  flex flex-col uppercase text-white Anton">
+              <div class="flex text-3xl border-solid border-4 border-white justify-between px-2">
+                <p>TEC.</p>
+                <p>DIB.</p>
+                <p>ORG.</p>
+                <p>COM.</p>
+                <p>REC.</p>
+              </div>
+              <div class="flex text-8xl justify-between mt-2">
+                <p> {{ statsEquipoIzq[0] }} </p>
+                <p> {{ statsEquipoIzq[1] }} </p>
+                <p> {{ statsEquipoIzq[3] }} </p>
+                <p> {{ statsEquipoIzq[3] }} </p>
+                <p> {{ statsEquipoIzq[4] }} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </transition>
+    <transition name="alineacion">
+      <div v-if="statsEquipo" class="flex absolute right-[1118px] top-[815px] w-[683px] h-[172px] opacity-0" id="stats2">
+          <div class="relative inline-block">
+            <img :src="'../../img/derecha/'+equipoDer.data.fondo+'_stats.png'">
+            <div class="absolute bottom-0 right-[88px] h-[172px] w-[595px] px-4 py-2  flex flex-col uppercase text-white Anton">
+              <div class="flex text-3xl border-solid border-4 border-white justify-between px-2">
+                <p>TEC.</p>
+                <p>DIB.</p>
+                <p>ORG.</p>
+                <p>COM.</p>
+                <p>REC.</p>
+              </div>
+              <div class="flex text-8xl justify-between mt-2">
+                <p> {{ statsEquipoDer[0] }} </p>
+                <p> {{ statsEquipoDer[1] }} </p>
+                <p> {{ statsEquipoDer[3] }} </p>
+                <p> {{ statsEquipoDer[3] }} </p>
+                <p> {{ statsEquipoDer[4] }} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </transition>
   </div>
   <!-- Botones Marcador -->
   <div class="bg-white w-[1000px]">
@@ -349,6 +395,9 @@
               <n-select class="w-40" v-model:value="alineacionDer" multiple size="large" :options="jDer"/>
               <button @click="showAlineacionDer" class="botones">Alineacion</button>
             </div>
+            <div class=" flex mt-4">
+              <button @click="showStats" class="botones">Stats Equipos</button>
+            </div>
 
           </div>
         </div>
@@ -403,6 +452,7 @@ export default{
     const statsDer = ref(false)
     const alIzq = ref(false)
     const alDer = ref(false)
+    const statsEquipo = ref(false)
     const imageIzq = ref("")
     const equipoIzq = ref({puntos: 0, faltas: 0})
     const equipoDer = ref({puntos: 0, faltas: 0})
@@ -435,6 +485,8 @@ export default{
     const imageUrl = ref("../img/logo.gif");
     const jugadoresIzq = ref([])
     const jugadoresDer = ref([])
+    const statsEquipoIzq = ref([])
+    const statsEquipoDer = ref([])
     const equipos = ref([
       {label:"Dreamteam", value: {id: 1, color: '#bd1722', fondo: 'dreamteam'}},
       {label:"Emta", value: {id:2, color:'#02ad3a',  fondo:'emta'}},
@@ -712,10 +764,18 @@ export default{
       clasificacion,
       alineacionIzq,alineacionDer, alDer, alIzq,
       jIzq, jDer,
-      personaIzq,personaDer, perIzq, perDer
+      personaIzq,personaDer, perIzq, perDer,
+      statsEquipoIzq, statsEquipoDer, statsEquipo
     }
   },
   methods:{
+    showStats(){
+      setTimeout(function(){ 
+        document.getElementById("stats").style.opacity = 100
+        document.getElementById("stats2").style.opacity = 100
+       }, 200);
+      this.statsEquipo = !this.statsEquipo 
+    },
     showPerDer(){
       setTimeout(function(){ 
         document.getElementById("pDer").style.opacity = 100
@@ -825,12 +885,20 @@ export default{
           this.jIzq.push({label: response.data[i].name, value: response.data[i]})
         }
       })
+      await axios.get(`http://lligaimproback.test/api/equipos/${this.equipoIzq.data.id}`)
+      .then(response => {
+        this.statsEquipoIzq = response.data
+      })
       await axios.get(`http://lligaimproback.test/api/improvisadores/${this.equipoDer.data.id}`)
       .then(response => {
         this.jugadoresDer = response.data
         for(let i = 0; i< response.data.length; i++){
           this.jDer.push({label: response.data[i].name, value: response.data[i]})
         }
+      })
+      await axios.get(`http://lligaimproback.test/api/equipos/${this.equipoDer.data.id}`)
+      .then(response => {
+        this.statsEquipoDer = response.data
       })
     },
     playerNameIzq(pos){
@@ -850,6 +918,7 @@ export default{
     inOutTarjeta(){
       setTimeout(function(){ 
         document.getElementById("crono").style.opacity = 100
+        document.getElementById("texto").style.opacity = 100
        }, 200);
        this.crono = !this.crono;
        this.texto = !this.texto;
