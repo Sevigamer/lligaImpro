@@ -23,7 +23,7 @@
               <img :src="'../../img/izq/'+equipoIzq.data.fondo+'_marcador.png'">
             </div>
             <div class="bg-white text-xl text-center w-[80px] h-[30px] absolute top-[82px] left-[127px]" id="crono">
-              <vue-countdown :time="duracion*60*1000" v-slot="{minutes, seconds}">
+              <vue-countdown :time="impro.duracion*60*1000" v-slot="{minutes, seconds}">
                 {{ String(minutes).padStart(2,'0') }}:{{ String(seconds).padStart(2,'0') }}
               </vue-countdown>
             </div>
@@ -322,32 +322,36 @@
         <div class="flex">
           <button @click="inOutTarjeta()" class="botones">Tarjeta/Crono IN/OUT</button>
         </div>
+        <div>
+          <n-select v-model:value="impro" size="large" :options="impros" placeholder="Improvisaciones"/>
+        </div>
         <div class="flex flex-col mt-2">
           <div class="form">
             <p>Tipo de impro</p>
-            <n-select v-model:value="tipo" size="large" :options="tipos" placeholder="Tipo de impro"/>
+            <n-select v-model:value="impro.tipo" size="large" :options="tipos" placeholder="Tipo de impro"/>
           </div>
           <div class="form">
             <p>Titulo:</p>
-            <n-input v-model:value="titulo" type="text" placeholder="Titulo" clearable/>
+            <n-input v-model:value="impro.titulo" type="text" placeholder="Titulo" clearable/>
           </div>
           <div class="form">
             <p>Num jugadores:</p>
-            <n-select v-model:value="jugadores" size="large" :options="numJug" placeholder="Num jugadores"/>
+            <n-select v-model:value="impro.jugadores" size="large" :options="numJug" placeholder="Num jugadores"/>
           </div>
           <div class="form">
             <p>Duracion:</p>
-            <n-select v-model:value="duracion" size="large" :options="time" placeholder="Duracion"/>
+            <n-select v-model:value="impro.duracion" size="large" :options="time" placeholder="Duracion"/>
           </div>
           <div class="form">
             <p>Categoria:</p>
-            <n-input v-model:value="categoria" type="text" placeholder="Categoria" clearable/>
+            <n-input v-model:value="impro.categoria" type="text" placeholder="Categoria" clearable/>
           </div>
-          <button @click="saveImpro" class="botones">Guardar Impro</button>
+          <!-- <button @click="saveImpro" class="botones">Guardar Impro</button> -->
         </div>
       </n-tab-pane>
       <n-tab-pane name="Jugadores" tab="Jugadores">
         <div class="flex flex-col w-full">
+          <button @click="swap" class="botones ">CAMBIO</button>
           <div class="flex">
             <n-input v-model:value="personaIzq.name"  type="text" placeholder="Nombre"/>
             <n-input v-model:value="personaIzq.apellidos" type="text" placeholder="Apellidos"/>
@@ -481,7 +485,8 @@ export default{
       {label: "4,5 minuto", value: 4.5},
       {label: "Idefinido", value: 0},
     ])
-    const impro = ref({id: 0})
+    const impro = ref({})
+    const impros = ref([])
     const imageUrl = ref("../img/logo.gif");
     const jugadoresIzq = ref([])
     const jugadoresDer = ref([])
@@ -743,7 +748,7 @@ export default{
       apellidos,
       numJug,
       time,
-      impro,
+      impro,impros,
       tipo,
       titulo,
       jugadores,
@@ -768,7 +773,33 @@ export default{
       statsEquipoIzq, statsEquipoDer, statsEquipo
     }
   },
+  async created(){
+    axios.get("http://lligaimproback.test/api/impros")
+    .then(response => {
+      for(let i = 0; i< response.data.length; i++){
+        this.impros.push({label: "IMPRO "+response.data[i].id, value:response.data[i]})
+      }
+    })
+  },
   methods:{
+    swap(){
+      let izq = this.equipoIzq
+      let der = this.equipoDer
+      this.equipoIzq = der
+      this.equipoDer = izq
+      izq = this.jIzq
+      der = this.jDer
+      this.jIzq = der
+      this.jDer = izq
+      izq = this.statsEquipoIzq
+      der = this.statsEquipoDer
+      this.statsEquipoIzq = der
+      this.statsEquipoDer = izq
+      izq = this.jugadoresIzq
+      der = this.jugadoresDer
+      this.jugadoresIzq = der
+      this.jugadoresDer = izq
+    },
     showStats(){
       setTimeout(function(){ 
         document.getElementById("stats").style.opacity = 100
