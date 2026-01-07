@@ -1,0 +1,121 @@
+import { createStore } from 'vuex'
+
+const store = createStore({
+    state(){
+        return{
+            impros:[
+                {id: 1, tipo: "CMP", titulo: "", jugadores:"", duracion: 1, categoria:""},
+                {id: 2, tipo: "MXT", titulo: "", jugadores:"", duracion: 1, categoria:""},
+                {id: 3, tipo: "SEG", titulo: "", jugadores:"", duracion: 1, categoria:""},
+                {id: 4, tipo: "CMP", titulo: "", jugadores:"", duracion: 1, categoria:""},
+                {id: 5, tipo: "CMP", titulo: "", jugadores:"", duracion: 1, categoria:""},
+                {id: 6, tipo: "CMP", titulo: "", jugadores:"", duracion: 1, categoria:""},
+                {id: 7, tipo: "CMP", titulo: "", jugadores:"", duracion: 1, categoria:""},
+                {id: 8, tipo: "CMP", titulo: "", jugadores:"", duracion: 1, categoria:""},
+                {id: 9, tipo: "CMP", titulo: "", jugadores:"", duracion: 1, categoria:""},
+                {id: 10, tipo: "CMP", titulo: "", jugadores:"", duracion: 1, categoria:""},
+                {id: 11, tipo: "CMP", titulo: "", jugadores:"", duracion: 1, categoria:""},
+                {id: 12, tipo: "CMP", titulo: "", jugadores:"", duracion: 1, categoria:""}
+            ],
+            clasificacion:[
+                {"equipo":"improvsessio","pperdios":0,"pempatados":0,"pganados":1,"iganadas":16,"faltas":5,"puntos":2,"insignias":8,"posicion":3},
+                {"equipo":"emta","pperdios":0,"pempatados":0,"pganados":0,"iganadas":16,"faltas":6,"puntos":1,"insignias":6,"posicion":5},
+                {"equipo":"impracticos","pperdios":0,"pempatados":0,"pganados":0,"iganadas":10,"faltas":2,"puntos":0,"insignias":6,"posicion":6},
+                {"equipo":"impropenosos","pperdios":0,"pempatados":0,"pganados":2,"iganadas":20,"faltas":2,"puntos":5,"insignias":9,"posicion":2},
+                {"equipo":"gladiadoras","pperdios":0,"pempatados":0,"pganados":0,"iganadas":12,"faltas":2,"puntos":2,"insignias":4,"posicion":4},
+                {"equipo":"impronymous","pperdios":0,"pempatados":0,"pganados":3,"iganadas":22,"faltas":8,"puntos":6,"insignias":7,"posicion":1}
+            ],
+            equipos:[
+                {"id":1,"name":"dreamteam","tecnica":"","dibujo":"","originalidad":"","comedia":"","recursos":""},
+                {"id":2,"name":"laemta","tecnica":"52","dibujo":"50","originalidad":"53","comedia":"54","recursos":"49"},
+                {"id":3,"name":"improvsessio","tecnica":"","dibujo":"","originalidad":"","comedia":"","recursos":""},
+                {"id":4,"name":"gladiadoras","tecnica":"64","dibujo":"67","originalidad":"66","comedia":"66","recursos":"65"},
+                {"id":5,"name":"aspaiet","tecnica":"50","dibujo":"50","originalidad":"50","comedia":"50","recursos":"50"},
+                {"id":6,"name":"impropenosos","tecnica":"50","dibujo":"50","originalidad":"50","comedia":"50","recursos":"50"},
+                {"id":7,"name":"impracticos","tecnica":"0","dibujo":"0","originalidad":"0","comedia":"0","recursos":"0"},
+                {"id":8,"name":"impronymous","tecnica":"0","dibujo":"0","originalidad":"0","comedia":"0","recursos":"0"},
+                {"id":9,"name":"notanymore","tecnica":"0","dibujo":"0","originalidad":"0","comedia":"0","recursos":"0"}
+            ],
+            estadisticas:[
+                {"jugador":1,"tecnica":95,"dibujo":95,"originalidad":95,"comedia":95,"recursos":95},
+                {"jugador":2,"tecnica":85,"dibujo":70,"originalidad":80,"comedia":90,"recursos":70},
+                {"jugador":3,"tecnica":85,"dibujo":65,"originalidad":80,"comedia":80,"recursos":80},
+                {"jugador":4,"tecnica":85,"dibujo":70,"originalidad":80,"comedia":90,"recursos":70},
+                {"jugador":5,"tecnica":85,"dibujo":65,"originalidad":80,"comedia":95,"recursos":70},
+                {"jugador":7,"tecnica":95,"dibujo":90,"originalidad":90,"comedia":90,"recursos":95},
+                {"jugador":8,"tecnica":80,"dibujo":75,"originalidad":80,"comedia":80,"recursos":75},
+                {"jugador":9,"tecnica":70,"dibujo":80,"originalidad":80,"comedia":80,"recursos":75},
+                {"jugador":10,"tecnica":90,"dibujo":80,"originalidad":90,"comedia":85,"recursos":75},
+                {"jugador":11,"tecnica":70,"dibujo":70,"originalidad":70,"comedia":80,"recursos":70},
+                {"jugador":12,"tecnica":70,"dibujo":70,"originalidad":80,"comedia":70,"recursos":70},
+                {"jugador":15,"tecnica":90,"dibujo":95,"originalidad":90,"comedia":85,"recursos":95},
+                {"jugador":16,"tecnica":90,"dibujo":90,"originalidad":90,"comedia":85,"recursos":90},
+                {"jugador":17,"tecnica":80,"dibujo":90,"originalidad":80,"comedia":70,"recursos":85},
+                {"jugador":18,"tecnica":80,"dibujo":90,"originalidad":90,"comedia":90,"recursos":80},
+                {"jugador":20,"tecnica":70,"dibujo":80,"originalidad":70,"comedia":70,"recursos":75},
+                {"jugador":21,"tecnica":70,"dibujo":80,"originalidad":75,"comedia":75,"recursos":75},
+                {"jugador":22,"tecnica":90,"dibujo":90,"originalidad":90,"comedia":80,"recursos":90},
+                {"jugador":23,"tecnica":80,"dibujo":80,"originalidad":75,"comedia":75,"recursos":80},
+                {"jugador":24,"tecnica":70,"dibujo":70,"originalidad":75,"comedia":70,"recursos":70},
+                {"jugador":25,"tecnica":60,"dibujo":70,"originalidad":75,"comedia":90,"recursos":70},
+                {"jugador":27,"tecnica":80,"dibujo":80,"originalidad":75,"comedia":75,"recursos":75},
+                {"jugador":28,"tecnica":90,"dibujo":80,"originalidad":90,"comedia":90,"recursos":85},
+                {"jugador":29,"tecnica":85,"dibujo":80,"originalidad":80,"comedia":75,"recursos":85},
+                {"jugador":30,"tecnica":75,"dibujo":80,"originalidad":70,"comedia":75,"recursos":75},
+                {"jugador":31,"tecnica":75,"dibujo":80,"originalidad":90,"comedia":85,"recursos":80},
+                {"jugador":35,"tecnica":70,"dibujo":80,"originalidad":75,"comedia":70,"recursos":70},
+                {"jugador":36,"tecnica":85,"dibujo":75,"originalidad":80,"comedia":90,"recursos":80},
+                {"jugador":37,"tecnica":85,"dibujo":90,"originalidad":80,"comedia":75,"recursos":80},
+                {"jugador":38,"tecnica":90,"dibujo":85,"originalidad":80,"comedia":75,"recursos":80},
+                {"jugador":39,"tecnica":85,"dibujo":80,"originalidad":80,"comedia":80,"recursos":80},
+                {"jugador":40,"tecnica":70,"dibujo":75,"originalidad":75,"comedia":70,"recursos":70}
+            ],
+            jugadores:[
+                {"id":1,"name":"fran","apellidos":"dawoud","edad":"1987-07-27 00:00:00","pueblo":"Aldaia","debut":"2000","promedio":"1.9","equipo":8},
+                {"id":3,"name":"meritxell","apellidos":"alcasser","edad":"1987-03-05 00:00:00","pueblo":"Alcasser","debut":"2000","promedio":"0.3","equipo":8},
+                {"id":8,"name":"sergio","apellidos":"paredes","edad":"2005-01-04 00:00:00","pueblo":"Aldaia","debut":"2023","promedio":"0.95","equipo":2},
+                {"id":10,"name":"natxo","apellidos":"olaya","edad":"2005-09-25 00:00:00","pueblo":"Aldaia","debut":"2022","promedio":"1.7","equipo":6},
+                {"id":14,"name":"nestor","apellidos":"rangel","edad":"2005-07-28 00:00:00","pueblo":"Alaquas","debut":"2024","promedio":"0,25","equipo":2},
+                {"id":15,"name":"andreu","apellidos":"blay","edad":"1998-11-02 00:00:00","pueblo":"Aldaia","debut":"2019","promedio":"1.9","equipo":3},
+                {"id":16,"name":"ruth","apellidos":"taberner","edad":"1998-02-19 00:00:00","pueblo":"Aldaia","debut":"2019","promedio":"1.7","equipo":3},
+                {"id":18,"name":"aurora","apellidos":"nieves","edad":"1998-09-05 00:00:00","pueblo":"Aldaia","debut":"2020","promedio":"1","equipo":3},
+                {"id":19,"name":"pau","apellidos":"aguado","edad":"2002-07-16 00:00:00","pueblo":"Aldaia","debut":"2024","promedio":"0.66","equipo":3},
+                {"id":20,"name":"sabela","apellidos":"iglesias","edad":"2001-11-15 00:00:00","pueblo":"Alaquas","debut":"2019","promedio":"0.125","equipo":3},
+                {"id":21,"name":"carolina","apellidos":"matoses","edad":"2006-06-17 00:00:00","pueblo":"Alaquas","debut":"2023","promedio":"0.6","equipo":4},
+                {"id":22,"name":"aitana","apellidos":"matoses","edad":"2006-06-17 00:00:00","pueblo":"Alaquas","debut":"2022","promedio":"1.725","equipo":3},
+                {"id":23,"name":"elsa","apellidos":"mallenco","edad":"2006-05-04 00:00:00","pueblo":"Aldaia","debut":"2023","promedio":"0.2","equipo":4},
+                {"id":24,"name":"júlia","apellidos":"garcia","edad":"2008-12-10 00:00:00","pueblo":"Aldaia","debut":"2023","promedio":"0.3","equipo":4},
+                {"id":25,"name":"victor","apellidos":"ramos","edad":"2009-07-17 00:00:00","pueblo":"Alaquas","debut":"2023","promedio":"1.125","equipo":4},
+                {"id":26,"name":"ainara","apellidos":"lopez","edad":"2005-01-19 00:00:00","pueblo":"Alaquas","debut":"2024","promedio":"1.3","equipo":4},
+                {"id":28,"name":"adria","apellidos":"lerma","edad":"1994-07-04 00:00:00","pueblo":"Barcelona","debut":"2023","promedio":"1.83","equipo":7},
+                {"id":32,"name":"javi","apellidos":"lopez","edad":"1997-05-19 00:00:00","pueblo":"Valencia","debut":"2024","promedio":"2","equipo":7},
+                {"id":35,"name":"maria","apellidos":"barriga","edad":"2003-07-01 00:00:00","pueblo":"Aldaia","debut":"2022","promedio":"0.4","equipo":6},
+                {"id":36,"name":"juan","apellidos":"martin","edad":"2005-02-06 00:00:00","pueblo":"Alaquas","debut":"2022","promedio":"1.5","equipo":6},            
+                {"id":37,"name":"joel","apellidos":"montalt","edad":"2005-05-30 00:00:00","pueblo":"Alaquas","debut":"2022","promedio":"1.3","equipo":6},
+                {"id":38,"name":"paula","apellidos":"quintanilla","edad":"2005-01-12 00:00:00","pueblo":"Alaquas","debut":"2022","promedio":"1.1","equipo":6},
+                {"id":39,"name":"carlos","apellidos":"fernandez","edad":"2002-03-17 00:00:00","pueblo":"Aldaia","debut":"2022","promedio":"1","equipo":6},
+                {"id":40,"name":"claudia","apellidos":"menendez","edad":"2003-04-02 00:00:00","pueblo":"Alaquas","debut":"2022","promedio":"0.2","equipo":6},
+                {"id":41,"name":"eva","apellidos":"quintanilla","edad":"2007-09-10 00:00:00","pueblo":"Alaquas","debut":"2024","promedio":"0","equipo":4},
+                {"id":42,"name":"miguel ángel","apellidos":"garcía","edad":"1985-05-21 00:00:00","pueblo":"Madrid","debut":"2025","promedio":"0","equipo":8},
+                {"id":43,"name":"nuria","apellidos":"fernández","edad":"1984-07-10 00:00:00","pueblo":"Valencia","debut":"2025","promedio":"0","equipo":8},
+                {"id":44,"name":"andrea","apellidos":"sanmartín","edad":"1997-08-07 00:00:00","pueblo":"Aldaia","debut":"2013","promedio":"0","equipo":8},
+                {"id":45,"name":"fabian","apellidos":"muñoz","edad":"1997-06-13 00:00:00","pueblo":"Alaquas","debut":"2025","promedio":"0","equipo":8},
+                {"id":46,"name":"david","apellidos":"cirujeda","edad":"1985-06-22 00:00:00","pueblo":"Valencia","debut":"2025","promedio":"0","equipo":8},
+                {"id":47,"name":"diego","apellidos":"montellano","edad":"2010-10-27 00:00:00","pueblo":"Aldaia","debut":"2024","promedio":"0","equipo":2},
+                {"id":48,"name":"natalia","apellidos":"paredes","edad":"2010-05-09 00:00:00","pueblo":"Aldaia","debut":"2024","promedio":"0","equipo":2},
+                {"id":49,"name":"rafa","apellidos":"alarcón","edad":"2012-08-07 00:00:00","pueblo":"Aldaia","debut":"2024","promedio":"0","equipo":2},
+                {"id":50,"name":"natalia","apellidos":"loua","edad":"2007-02-21 00:00:00","pueblo":"Alaquas","debut":"2025","promedio":"0","equipo":2},
+                {"id":51,"name":"paula","apellidos":"marin","edad":"2004-07-22 00:00:00","pueblo":"Aldaia","debut":"2024","promedio":"0","equipo":2},
+                {"id":52,"name":"david","apellidos":"llago","edad":"2005-12-27 00:00:00","pueblo":"Quart","debut":"2024","promedio":"0","equipo":7},
+                {"id":53,"name":"pau","apellidos":"sanmartín","edad":"2006-08-25 00:00:00","pueblo":"Quart","debut":"2024","promedio":"0","equipo":7},
+                {"id":54,"name":"andrea","apellidos":"rodríguez","edad":"2006-06-22 00:00:00","pueblo":"Quart","debut":"2024","promedio":"0","equipo":7},
+                {"id":55,"name":"candela","apellidos":"velasco","edad":"2006-10-21 00:00:00","pueblo":"Quart","debut":"2024","promedio":"0","equipo":7},
+                {"id":56,"name":"antonio","apellidos":"sevilla","edad":"2006-09-11 00:00:00","pueblo":"Quart","debut":"2024","promedio":"0","equipo":7}
+
+            ]
+            
+        }
+    }
+})
+
+export default store;

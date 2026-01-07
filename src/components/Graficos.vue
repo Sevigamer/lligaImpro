@@ -162,7 +162,7 @@
       </div>
     </transition>
     <transition name="statsDer">
-      <div  v-if="statsDer" id="estadisticasDer" class="w-[538px] h-[697px] absolute top-[175px] left-[1265px] flex flex-col opacity-0">
+      <div  v-if="statsDer" id="estadisticasDer" class="w-[538px] h-[590px] absolute top-[175px] left-[1265px] flex flex-col opacity-0">
         <div class="h-[114px] w-full uppercase flex items-center justify-center">
           <div class="text-white text-7xl Anton">{{ improvisadorDer.name + " " + improvisadorDer.apellidos }}</div>
         </div>
@@ -377,7 +377,7 @@
               <div class="flex justify-between flex-col w-1/2">
                 <p class="text-3xl">Jugadores Izquierda</p>
                 <div v-for="improvisador in jugadoresIzq" :key="improvisador.id" class="flex items-center">
-                  <p class="mr-2 uppercase "> {{ improvisador.name }} </p>
+                  <p class="mr-2 uppercase "> {{ improvisador.name}} {{improvisador.apellidos.charAt(0) }}. </p>
                   <button @click="playerNameIzq(improvisador)" class="bg-slate-300 rounded p-2 mr-2">IN/OUT</button>
                   <button @click="statIzq(improvisador, true)" class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
                   <button @click="statDer(improvisador, true)" class="bg-slate-300 rounded p-2">STATS DER</button>
@@ -386,7 +386,7 @@
               <div class="flexjustify-between flex-col w-1/2">
                 <p class="text-3xl">Jugadores Derecha</p>
                 <div v-for="improvisador in jugadoresDer" :key="improvisador.id" class="flex items-center">
-                  <p class="mr-2 uppercase "> {{ improvisador.name }} </p>
+                  <p class="mr-2 uppercase "> {{ improvisador.name}} {{improvisador.apellidos.charAt(0) }}. </p>
                   <button @click="playerNameDer(improvisador)" class="bg-slate-300 rounded p-2 mr-2">IN/OUT</button>
                   <button @click="statIzq(improvisador, false)" class="bg-slate-300 rounded p-2 mr-2">STATS IZQ</button>
                   <button @click="statDer(improvisador, false)" class="bg-slate-300 rounded p-2">STATS DER</button>
@@ -499,6 +499,9 @@ export default{
       {label:"Gladiadoras", value: {id:4, color:'#ff33b9',  fondo:'gladiadoras'}},
       {label:"Aspaiet", value: {id:5, color:'#fad517',  fondo:'aspaiet'}},
       {label:"Impropenosos", value: {id:6, color:'#1c70b7',  fondo:'impropenosos'}},
+      {label:"Impracticos", value: {id:7, color:'#1c70b7',  fondo:'impracticos'}},
+      {label:"Impronymous", value: {id:8, color:'#1c70b7',  fondo:'impropenosos'}},
+
     ])
     const configRadar = ref({
     "style":{
@@ -774,7 +777,7 @@ export default{
     }
   },
   async created(){
-    axios.get("http://lligaimproback.test/api/impros")
+    await axios.get("http://lligaimproback.test/api/impros")
     .then(response => {
       for(let i = 0; i< response.data.length; i++){
         this.impros.push({label: "IMPRO "+response.data[i].id, value:response.data[i]})
@@ -864,7 +867,7 @@ export default{
       this.improvisadorIzq.apellidos = improvisador.apellidos
       this.improvisadorIzq.pueblo = improvisador.pueblo
       this.improvisadorIzq.debut = improvisador.debut
-      this.improvisadorIzq.edad = improvisador.edad
+      this.improvisadorIzq.edad = improvisador.edadreal
       let number =  parseFloat(improvisador.promedio)
       this.ratingLeft.rating = number
       await axios.get(`http://lligaimproback.test/api/stats/${improvisador.id}`)
@@ -892,7 +895,7 @@ export default{
       this.improvisadorDer.apellidos = improvisador.apellidos
       this.improvisadorDer.pueblo = improvisador.pueblo
       this.improvisadorDer.debut = improvisador.debut
-      this.improvisadorDer.edad = improvisador.edad
+      this.improvisadorDer.edad = improvisador.edadreal
       this.improvisadorDer.promedio = improvisador.promedio
       let number =  parseFloat(improvisador.promedio)
       this.ratingRight.rating = number
@@ -904,7 +907,7 @@ export default{
       })
       setTimeout(function(){ 
         document.getElementById("estadisticasDer").style.opacity = 100
-        document.getElementById("estadisticasDer").style.backgroundImage = `url('../../img/stats/${url}.png')`;
+        document.getElementById("estadisticasDer").style.backgroundImage = `url('../../img/stats/test.png')`;
        }, 200);
       this.statsDer = !this.statsDer
     },
@@ -913,7 +916,7 @@ export default{
       .then(response => {
         this.jugadoresIzq = response.data
         for(let i = 0; i< response.data.length; i++){
-          this.jIzq.push({label: response.data[i].name, value: response.data[i]})
+          this.jIzq.push({label: `${response.data[i].name} ${response.data[i].apellidos.charAt(0)}.`, value: response.data[i]})
         }
       })
       await axios.get(`http://lligaimproback.test/api/equipos/${this.equipoIzq.data.id}`)
@@ -924,7 +927,7 @@ export default{
       .then(response => {
         this.jugadoresDer = response.data
         for(let i = 0; i< response.data.length; i++){
-          this.jDer.push({label: response.data[i].name, value: response.data[i]})
+          this.jDer.push({label: `${response.data[i].name} ${response.data[i].apellidos.charAt(0)}.`, value: response.data[i]})
         }
       })
       await axios.get(`http://lligaimproback.test/api/equipos/${this.equipoDer.data.id}`)
@@ -933,6 +936,7 @@ export default{
       })
     },
     playerNameIzq(pos){
+      debugger
       setTimeout(function(){ 
         document.getElementById("nIzq").style.opacity = 100
        }, 200);
